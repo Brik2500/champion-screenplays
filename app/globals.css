@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #09090b;
+  color: #fafafa;
+}
+
+/* ── Loading screen animations ─────────────────────────────────── */
+
+@keyframes trophy-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.3; transform: scale(1);    }
+  50%       { opacity: 0.7; transform: scale(1.08); }
+}
+
+@keyframes ring-pulse {
+  0%   { transform: scale(0.95); opacity: 0.6; }
+  70%  { transform: scale(1.25); opacity: 0;   }
+  100% { transform: scale(1.25); opacity: 0;   }
+}
+
+@keyframes bar-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%);  }
+}
+
+@keyframes fade-up-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes fade-down-out {
+  from { opacity: 1; transform: translateY(0);     }
+  to   { opacity: 0; transform: translateY(-10px); }
+}
+
+@keyframes insight-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+@keyframes card-drift {
+  0%, 100% { transform: translateY(0) rotate(var(--rot)); opacity: var(--op); }
+  50%       { transform: translateY(-6px) rotate(var(--rot)); opacity: calc(var(--op) * 1.4); }
+}
+
+.trophy-float  { animation: trophy-float  4s ease-in-out infinite; }
+.glow-breathe  { animation: glow-breathe  3s ease-in-out infinite; }
+.ring-pulse    { animation: ring-pulse    2.4s ease-out infinite;   }
+.bar-shimmer   { animation: bar-shimmer   2.2s linear infinite;     }
+.stage-in      { animation: fade-up-in   0.45s ease-out forwards;  }
+.insight-in    { animation: insight-in   0.5s ease-out forwards;   }
+
+/* ── Print ─────────────────────────────────────────────────────── */
+
+@media print {
+  body { background-color: #ffffff; color: #000000; }
+  header { display: none; }
+  main { max-width: 100%; padding: 0; }
+}
