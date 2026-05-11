@@ -211,7 +211,8 @@ function buildEmailHTML(report: AnalysisReport): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, report } = (await req.json()) as { email: string; report: AnalysisReport };
+    const { email: rawEmail, report } = (await req.json()) as { email: string; report: AnalysisReport };
+    const email = rawEmail?.toLowerCase().trim();
 
     if (!email || !report) {
       return NextResponse.json({ error: "Email and report are required." }, { status: 400 });
