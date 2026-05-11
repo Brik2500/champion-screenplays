@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import AnalysisReport from "@/components/AnalysisReport";
 import LoadingStatus from "@/components/LoadingStatus";
@@ -8,7 +8,7 @@ import type { AnalysisReport as ReportType } from "@/lib/types";
 
 type Stage = "verifying" | "analyzing" | "done" | "error";
 
-export default function SuccessPage() {
+function SuccessInner() {
   const params = useSearchParams();
   const router = useRouter();
   const sessionId = params.get("session_id");
@@ -128,5 +128,20 @@ export default function SuccessPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-xl py-24 text-center">
+          <div className="mx-auto mb-6 h-12 w-12 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+          <p className="text-sm text-zinc-500">Loading...</p>
+        </div>
+      }
+    >
+      <SuccessInner />
+    </Suspense>
   );
 }
