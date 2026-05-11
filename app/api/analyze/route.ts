@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeScript } from "@/lib/ai";
 
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   try {
     const data = await req.formData();
@@ -41,7 +43,6 @@ async function extractText(file: File): Promise<string> {
   if (ext === "pdf") {
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    // Try text extraction first
     try {
       const pdfParse = (await import("pdf-parse")).default;
       const result = await pdfParse(buffer);
@@ -49,48 +50,15 @@ async function extractText(file: File): Promise<string> {
         return result.text;
       }
     } catch {
-      // fall through to OCR
+      // fall through
     }
 
-    // PDF has no readable text; render pages and OCR
-    console.log("[analyze] Scanned PDF detected, running OCR...");
-    return ocrPDF(buffer);
-  }
-
-  if (["jpg", "jpeg", "png", "webp", "tiff", "tif", "bmp"].includes(ext ?? "")) {
-    return ocrImage(file);
+    // Scanned PDF — OCR not supported in this environment
+    throw new Error(
+      "This appears to be a scanned PDF with no text layer. Please export your screenplay as a text-based PDF from Final Draft, WriterDuet, or a similar app and try again."
+    );
   }
 
   // txt, fountain, fdx
   return file.text();
-}
-
-async function ocrPDF(buffer: Buffer): Promise<string> {
-  const { pdfToPng } = await import("pdf-to-png-converter");
-  const pages = await pdfToPng(buffer, {
-    disableFontFace: true,
-    useSystemFonts: true,
-  });
-
-  const { createWorker } = await import("tesseract.js");
-  const worker = await createWorker("eng");
-
-  const texts: string[] = [];
-  for (const page of pages) {
-    if (!page.content) continue;
-    const { data } = await worker.recognize(page.content);
-    texts.push(data.text);
-  }
-
-  await worker.terminate();
-  return texts.join("\n\n");
-}
-
-async function ocrImage(file: File): Promise<string> {
-  const { createWorker } = await import("tesseract.js");
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const worker = await createWorker("eng");
-  const { data } = await worker.recognize(buffer);
-  await worker.terminate();
-  return data.text;
 }
