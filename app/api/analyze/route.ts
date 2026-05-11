@@ -77,6 +77,7 @@ async function ocrPDF(buffer: Buffer): Promise<string> {
 
   const texts: string[] = [];
   for (const page of pages) {
+    if (!page.content) continue;
     const { data } = await worker.recognize(page.content);
     texts.push(data.text);
   }
