@@ -46,7 +46,7 @@ async function analyzeWithGroq(req: AnalyzeRequest): Promise<AnalysisReport> {
 
   const call = async (prompt: string, maxTokens: number) => {
     const res = await client.chat.completions.create({
-      model: "llama-3.1-70b-versatile",
+      model: "llama-3.3-70b-versatile",
       messages: [
         {
           role: "system",
