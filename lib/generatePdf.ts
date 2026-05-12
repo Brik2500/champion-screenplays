@@ -20,9 +20,10 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
 
     // ── Colors ─────────────────────────────────────────────────────────────────
     const AMBER  = "#f59e0b";
-    const WHITE  = "#ffffff";
-    const MUTED  = "#71717a";
-    const LIGHT  = "#d4d4d8";
+    const WHITE  = "#ffffff";   // header only (dark bg)
+    const DARK   = "#1a1a1a";   // headings/titles on white bg
+    const MUTED  = "#52525b";   // secondary text on white bg
+    const LIGHT  = "#374151";   // body text on white bg
     const GREEN  = "#10b981";
     const RED    = "#ef4444";
 
@@ -88,7 +89,7 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
       resetX();
       doc.fontSize(9).fillColor(AMBER).font("Helvetica-Bold")
         .text(`${n}.`, LEFT, doc.y, { width: 18, lineBreak: false });
-      doc.fontSize(9).fillColor(LIGHT).font("Helvetica")
+      doc.fontSize(9).fillColor(DARK).font("Helvetica")
         .text(text, LEFT + 20, doc.y - doc.currentLineHeight(), { width: W - 20, lineGap: 2 });
       resetX();
       doc.moveDown(0.3);
@@ -96,7 +97,7 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
 
     const craftSection = (title: string, notes: { working: string[]; needsImprovement: string[] }) => {
       resetX();
-      doc.fontSize(10).fillColor(WHITE).font("Helvetica-Bold").text(title, LEFT, doc.y, { width: W });
+      doc.fontSize(10).fillColor(DARK).font("Helvetica-Bold").text(title, LEFT, doc.y, { width: W });
       resetX();
       doc.moveDown(0.4);
 
@@ -144,7 +145,7 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
       .text(report.industryVerdict.label, LEFT, doc.y, { width: W, lineBreak: false });
     resetX();
     doc.moveDown(0.3);
-    doc.fontSize(9).fillColor(LIGHT).font("Helvetica")
+    doc.fontSize(9).fillColor(MUTED).font("Helvetica")
       .text(report.industryVerdict.rationale, LEFT, doc.y, { width: W, lineGap: 2 });
     resetX();
     rule();
@@ -154,9 +155,8 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
     // ═══════════════════════════════════════════════════════════════════════════
     sectionLabel("Overall Score");
     doc.fontSize(36).fillColor(AMBER).font("Helvetica-Bold")
-      .text(String(report.overallScore), LEFT, doc.y, { lineBreak: false });
+      .text(String(report.overallScore), LEFT, doc.y, { width: W });
     resetX();
-    doc.moveDown(0.2);
     doc.fontSize(11).fillColor(AMBER).font("Helvetica-Bold")
       .text(scoreLabel(report.overallScore), LEFT, doc.y, { width: W });
     resetX();
@@ -177,7 +177,7 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
     // EXECUTIVE SUMMARY
     // ═══════════════════════════════════════════════════════════════════════════
     sectionLabel("Executive Summary");
-    doc.fontSize(9).fillColor(LIGHT).font("Helvetica")
+    doc.fontSize(9).fillColor(LIGHT).font("Helvetica-Oblique")
       .text(report.executiveSummary, LEFT, doc.y, { width: W, lineGap: 3 });
     resetX();
     rule();
@@ -229,7 +229,7 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
     sectionLabel("Comparable Titles");
     report.comparableTitles.forEach((c) => {
       resetX();
-      doc.fontSize(9).fillColor(WHITE).font("Helvetica-Bold")
+      doc.fontSize(9).fillColor(DARK).font("Helvetica-Bold")
         .text(c.title, LEFT, doc.y, { width: W });
       resetX();
       doc.fontSize(8).fillColor(MUTED).font("Helvetica")
