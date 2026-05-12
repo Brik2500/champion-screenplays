@@ -322,7 +322,7 @@ export default function Home() {
       {/* ══════════════════════════════════════
           SECTION 5: PRICING
       ══════════════════════════════════════ */}
-      <section className="py-20 sm:py-24">
+      <section id="pricing" className="py-20 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
           <p className="mb-4 text-base font-bold uppercase tracking-widest text-amber-500">Pricing</p>
           <h2 className="text-3xl font-black text-white sm:text-4xl">
@@ -438,12 +438,18 @@ export default function Home() {
 
       {/* Footer */}
       <div className="border-t border-zinc-800 py-10">
-        <div className="flex flex-col items-center gap-3 text-center">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="flex items-center gap-6 text-xs text-zinc-600">
+            <Link href="/faq" className="transition hover:text-zinc-400">FAQ</Link>
+            <Link href="/#pricing" className="transition hover:text-zinc-400">Pricing</Link>
+            <Link href="/#sample" className="transition hover:text-zinc-400">Sample Report</Link>
+            <a href="mailto:support@championscreenplays.com" className="transition hover:text-zinc-400">Contact</a>
+          </div>
           <p className="text-xs text-zinc-600">
             © {new Date().getFullYear()} Champion Screenplays · Professional screenplay development coverage.
           </p>
           <p className="text-xs text-zinc-700">
-            Built for serious writers. Inspired by professional development standards. Your work stays private.
+            Your work stays private. Scripts are never stored or shared.
           </p>
         </div>
       </div>

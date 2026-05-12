@@ -17,8 +17,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span className="text-lg font-bold tracking-tight text-white">Champion Screenplays</span>
             </Link>
             <nav className="ml-auto flex items-center gap-5">
-              <Link href="/analyze" className="text-sm font-medium text-zinc-400 transition hover:text-amber-400">
-                Analyze
+              <Link href="/#pricing" className="text-sm font-medium text-zinc-400 transition hover:text-amber-400 hidden sm:block">
+                Pricing
+              </Link>
+              <Link href="/faq" className="text-sm font-medium text-zinc-400 transition hover:text-amber-400 hidden sm:block">
+                FAQ
               </Link>
               <Link
                 href="/analyze"
