@@ -47,6 +47,7 @@ function SuccessInner() {
           writerName: string;
           genre: string;
           format: string;
+          email: string;
           fileName: string;
           fileType: string;
           fileBase64: string;
@@ -90,7 +91,16 @@ function SuccessInner() {
           throw new Error("Analysis returned an unexpected response. Please try again.");
         }
 
-        // 5. Clean up session storage
+        // 5. Auto-send PDF report to customer's email
+        if (stored.email) {
+          fetch("/api/send-report", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: stored.email, report: result }),
+          }).catch((err) => console.error("[auto-send]", err));
+        }
+
+        // 6. Clean up session storage
         sessionStorage.removeItem("cs_pending_analysis");
 
         setReport(result);

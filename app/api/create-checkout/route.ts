@@ -5,7 +5,7 @@ export const maxDuration = 30;
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, writerName, genre, format } = await req.json();
+    const { title, writerName, genre, format, email } = await req.json();
 
     if (!title || !writerName || !genre || !format) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
       "metadata[writerName]": writerName,
       "metadata[genre]": genre,
       "metadata[format]": format,
+      ...(email ? { customer_email: email } : {}),
       success_url: `${origin}/analyze/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/analyze`,
     });

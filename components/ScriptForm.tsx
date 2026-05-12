@@ -17,6 +17,7 @@ export default function ScriptForm() {
   const [writerName, setWriterName] = useState("");
   const [genre, setGenre] = useState("");
   const [format, setFormat] = useState<"Feature" | "Short" | "TV Pilot">("Feature");
+  const [email, setEmail] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,6 @@ export default function ScriptForm() {
     setLoading(true);
 
     try {
-      // Convert file to base64 so it survives the Stripe redirect
       const base64 = await fileToBase64(file);
 
       sessionStorage.setItem(
@@ -62,17 +62,17 @@ export default function ScriptForm() {
           writerName,
           genre,
           format,
+          email: email.toLowerCase().trim(),
           fileName: file.name,
           fileType: file.type || "application/octet-stream",
           fileBase64: base64,
         })
       );
 
-      // Create Stripe Checkout session
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, writerName, genre, format }),
+        body: JSON.stringify({ title, writerName, genre, format, email: email.toLowerCase().trim() }),
       });
 
       if (!res.ok) {
@@ -125,6 +125,18 @@ export default function ScriptForm() {
         </div>
       </div>
 
+      {/* Email */}
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-zinc-300">
+          Your Email <span className="text-zinc-600 font-normal">— report will be sent here automatically</span>
+        </label>
+        <input
+          required type="email" placeholder="your@email.com"
+          value={email} onChange={(e) => setEmail(e.target.value)}
+          className={inputClass}
+        />
+      </div>
+
       {/* File Upload Zone */}
       <div>
         <label className="mb-1.5 block text-sm font-medium text-zinc-300">Script File</label>
@@ -173,7 +185,6 @@ export default function ScriptForm() {
         </p>
       )}
 
-      {/* Trust line */}
       <div className="flex items-center gap-2 text-xs text-zinc-600">
         <span>🔒</span>
         <span>Secured by Stripe. Your script is never stored. One-time payment, no subscription.</span>
@@ -194,7 +205,6 @@ function fileToBase64(file: File): Promise<string> {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
-      // result is "data:mimetype;base64,<data>" — strip the prefix
       const base64 = result.split(",")[1];
       resolve(base64);
     };

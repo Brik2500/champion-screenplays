@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import type { AnalysisReport } from "@/lib/types";
+import { generateReportPdf } from "@/lib/generatePdf";
+
+export const maxDuration = 60;
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -218,13 +221,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email and report are required." }, { status: 400 });
     }
 
-    const html = buildEmailHTML(report);
+    const [html, pdfBuffer] = await Promise.all([
+      Promise.resolve(buildEmailHTML(report)),
+      generateReportPdf(report),
+    ]);
+
+    const fileName = `${report.title.replace(/[^a-z0-9]/gi, "_")}_Coverage_Report.pdf`;
 
     await resend.emails.send({
       from: "Champion Screenplays <coverage@mail.championscreenplays.com>",
       to: email,
       subject: `Your Coverage Report: ${report.title}`,
       html,
+      attachments: [
+        {
+          filename: fileName,
+          content: pdfBuffer,
+        },
+      ],
     });
 
     return NextResponse.json({ success: true });

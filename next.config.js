@@ -5,6 +5,7 @@ const nextConfig = {
     "pdf-parse",
     "tesseract.js",
     "@napi-rs/canvas",
+    "pdfkit",
   ],
 };
 
