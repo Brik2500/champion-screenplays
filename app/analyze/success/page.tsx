@@ -26,8 +26,12 @@ function SuccessInner() {
         // 1. Verify payment with Stripe
         const verifyRes = await fetch(`/api/verify-payment?session_id=${sessionId}`);
         if (!verifyRes.ok) {
-          const { error } = await verifyRes.json();
-          throw new Error(error ?? "Payment verification failed.");
+          let msg = "Payment verification failed. Please contact us with your order details.";
+          try {
+            const data = await verifyRes.json();
+            if (data.error) msg = data.error;
+          } catch { /* non-JSON response */ }
+          throw new Error(msg);
         }
 
         // 2. Retrieve form data stored before checkout
@@ -67,11 +71,24 @@ function SuccessInner() {
 
         const analyzeRes = await fetch("/api/analyze", { method: "POST", body });
         if (!analyzeRes.ok) {
-          const { error } = await analyzeRes.json();
-          throw new Error(error ?? "Analysis failed.");
+          let msg = "Analysis failed. Please return to the analyze page and try again.";
+          try {
+            const data = await analyzeRes.json();
+            if (data.error) msg = data.error;
+          } catch {
+            if (analyzeRes.status === 504 || analyzeRes.status === 408) {
+              msg = "Analysis timed out — your script may be very long. Please try again.";
+            }
+          }
+          throw new Error(msg);
         }
 
-        const result = await analyzeRes.json();
+        let result;
+        try {
+          result = await analyzeRes.json();
+        } catch {
+          throw new Error("Analysis returned an unexpected response. Please try again.");
+        }
 
         // 5. Clean up session storage
         sessionStorage.removeItem("cs_pending_analysis");
