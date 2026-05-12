@@ -63,7 +63,21 @@ async function analyzeWithGroq(req: AnalyzeRequest): Promise<AnalysisReport> {
 // ── JSON parser ───────────────────────────────────────────────────────────────
 
 function parseJSON(raw: string): Record<string, unknown> {
-  const cleaned = raw.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+  let cleaned = raw
+    .replace(/```json\n?/g, "")
+    .replace(/```\n?/g, "")
+    .trim();
+
+  // Find the outermost JSON object
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start !== -1 && end !== -1) {
+    cleaned = cleaned.slice(start, end + 1);
+  }
+
+  // Remove trailing commas before ] or }
+  cleaned = cleaned.replace(/,\s*([\]}])/g, "$1");
+
   return JSON.parse(cleaned);
 }
 
