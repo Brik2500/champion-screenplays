@@ -90,7 +90,7 @@ export function buildReportPrompt(
 
   const obs = JSON.stringify(observations, null, 2);
 
-  return `You are a senior script analyst at a major streaming production company. You are writing the final professional coverage report for this screenplay. Your analytical foundation has already been established in the INTERNAL OBSERVATIONS below. Use them to anchor the report.
+  return `You are a senior script analyst at a major streaming production company. You are writing the final professional coverage report for this screenplay. Your analytical foundation has already been established in the INTERNAL OBSERVATIONS below — use them as your primary source of truth. Do NOT invent details not present in the observations.
 
 SCRIPT DETAILS:
 - Title: ${req.title}
@@ -100,11 +100,7 @@ SCRIPT DETAILS:
 
 ${formatRules}
 
-SCRIPT TEXT:
-${req.scriptText}
-
----
-INTERNAL STORY OBSERVATIONS (your analytical foundation):
+INTERNAL STORY OBSERVATIONS (your complete analytical foundation — use these exclusively):
 ${obs}
 ---
 
