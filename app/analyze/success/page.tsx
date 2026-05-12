@@ -123,7 +123,11 @@ function SuccessInner() {
             Return to Analyze
           </a>
           <p className="mt-4 text-xs text-zinc-600">
-            Your payment was processed. If you continue to have trouble, contact us and we will resolve it.
+            Your payment was processed. Email us at{" "}
+            <a href="mailto:support@championscreenplays.com" className="text-amber-500 underline underline-offset-2">
+              support@championscreenplays.com
+            </a>{" "}
+            and we will make it right.
           </p>
         </div>
       </div>
