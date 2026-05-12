@@ -221,7 +221,7 @@ export async function POST(req: NextRequest) {
     const html = buildEmailHTML(report);
 
     await resend.emails.send({
-      from: "Champion Screenplays <onboarding@resend.dev>",
+      from: "Champion Screenplays <coverage@mail.championscreenplays.com>",
       to: email,
       subject: `Your Coverage Report: ${report.title}`,
       html,
