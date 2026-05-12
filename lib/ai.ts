@@ -46,9 +46,15 @@ async function analyzeWithGroq(req: AnalyzeRequest): Promise<AnalysisReport> {
 
   const call = async (prompt: string, maxTokens: number) => {
     const res = await client.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.4,
+      model: "llama-3.1-70b-versatile",
+      messages: [
+        {
+          role: "system",
+          content: "You are a professional screenplay analyst. You always respond with valid, complete JSON only. No explanation, no markdown, no code fences. Your JSON must be parseable by JSON.parse().",
+        },
+        { role: "user", content: prompt },
+      ],
+      temperature: 0.3,
       max_tokens: maxTokens,
     });
     return parseJSON(res.choices[0]?.message?.content ?? "");
@@ -63,8 +69,6 @@ async function analyzeWithGroq(req: AnalyzeRequest): Promise<AnalysisReport> {
 // ── JSON parser ───────────────────────────────────────────────────────────────
 
 function parseJSON(raw: string): Record<string, unknown> {
-  const { jsonrepair } = require("jsonrepair");
-
   let cleaned = raw
     .replace(/```json\n?/g, "")
     .replace(/```\n?/g, "")
@@ -77,9 +81,20 @@ function parseJSON(raw: string): Record<string, unknown> {
     cleaned = cleaned.slice(start, end + 1);
   }
 
-  // Use jsonrepair to fix trailing commas, unescaped quotes, truncation, etc.
-  const repaired = jsonrepair(cleaned);
-  return JSON.parse(repaired);
+  // Fix common LLM JSON issues
+  cleaned = cleaned
+    .replace(/,\s*([\]}])/g, "$1")   // trailing commas
+    .replace(/([}\]])\s*([{[])/g, "$1,$2"); // missing commas between objects
+
+  // First try native parse
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    // Fall back to jsonrepair
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { jsonrepair } = require("jsonrepair");
+    return JSON.parse(jsonrepair(cleaned));
+  }
 }
 
 // ── Normalizers ───────────────────────────────────────────────────────────────
