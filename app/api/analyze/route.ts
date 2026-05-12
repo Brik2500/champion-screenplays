@@ -29,9 +29,10 @@ export async function POST(req: NextRequest) {
     const report = await analyzeScript({ title, writerName, genre, format, scriptText });
     return NextResponse.json({ ...report, title, writerName });
   } catch (err) {
-    console.error("[analyze]", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[analyze]", message);
     return NextResponse.json(
-      { error: "Analysis failed. Check your API key and try again." },
+      { error: message },
       { status: 500 }
     );
   }
