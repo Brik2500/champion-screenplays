@@ -7,7 +7,8 @@ const FORMAT_RULES: Record<string, string> = {
 - Standalone narrative. Evaluate three-act structure, midpoint, earned resolution.
 - Flag scenes that advance neither character nor plot.
 - COMPS: Feature films only. No TV, no shorts.
-- Commercial outlook: theatrical viability, streaming placement, budget tier.`,
+- Commercial outlook: evaluate as a FILM. Use theatrical language — wide release, limited release, platform release, awards positioning, indie vs. mid-budget vs. studio tier, audience quadrant (four-quadrant, genre, niche). Streaming is a secondary landing spot, not the primary lens.
+- BANNED in feature coverage: "binge potential", "binge-worthy", "episodic sustainability", "season", "episodes". These are TV metrics. Never apply them to a feature.`,
 
   "Short": `FORMAT: SHORT FILM
 - Economy of storytelling. Every scene and line must earn its place.
