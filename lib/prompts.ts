@@ -262,10 +262,11 @@ comparableTitles →
   RULE: Name the specific tonal, structural, thematic, or audience parallel — not "similar themes."
 
 commercialOutlook →
-  IDENTITY: Market positioning only. Acquisition, distribution, audience, budget tier.
-  VOCABULARY: Release strategy, audience quadrant, acquisition appeal, budget tier, platform fit, actor appeal.
-  BANNED: Emotional reactions, structural notes, craft observations, character analysis.
-  RULE: Only reference execution problems if they have a direct commercial consequence — and state that consequence explicitly.
+  IDENTITY: Screenplay-industry market positioning. How this gets bought, positioned, and sold.
+  VOCABULARY: Use specific industry positioning language — prestige streaming, elevated genre, actor-driven, mid-budget psychological thriller, festival-to-streaming crossover, contained neo-noir, platform release, awards-adjacent, four-quadrant, niche adult demographic.
+  BANNED: Generic filler — "wide release," "dedicated fan base," "broad audience," "streaming platforms generally." These phrases say nothing. Name the specific platform tier, the specific audience, the specific acquisition context.
+  BANNED ALSO: Emotional reactions, structural notes, craft observations, character analysis.
+  RULE: Only reference execution problems if they create a specific, nameable commercial consequence.
 
 strengths →
   IDENTITY: What works and why it creates value.
@@ -275,33 +276,35 @@ strengths →
 weaknesses →
   IDENTITY: Root causes and their audience consequences.
   RULE: Anchored to primaryWeaknesses. Name the element, its root cause, and its consequence on the audience experience.
-  BANNED: Language already used in structureNotes, pacingNotes, or other craft sections.
+  BANNED: The word "pacing" — if pacing is a weakness, describe its audience consequence instead (e.g. "the second act loses urgency," not "pacing is slow"). Also banned: language already used in structureNotes, pacingNotes, or other craft sections.
 
 structureNotes →
   IDENTITY: Narrative architecture only.
   VOCABULARY: Act progression, escalation, scene sequencing, turning points, midpoint, transitions, narrative logic, cause-and-effect chain.
-  BANNED: Emotional audience reactions (those belong in readerReaction), pacing rhythm (belongs in pacingNotes).
+  BANNED: The word "pacing" — if a structural problem affects rhythm, describe the architectural cause, not the felt result. Emotional audience reactions (those belong in readerReaction).
+  EXAMPLE: Say "the scene sequencing breaks the cause-and-effect chain in act two" — NOT "the pacing feels slow."
 
 characterNotes →
   IDENTITY: Who these people are and how they behave on the page.
   VOCABULARY: Motivation clarity, internal arc, want vs. need, relationship dynamics, behavioral consistency, emotional truth.
-  BANNED: Dialogue quality (belongs in dialogueNotes), structural observations.
+  BANNED: Dialogue quality (belongs in dialogueNotes), structural observations, the word "pacing."
 
 dialogueNotes →
   IDENTITY: How characters speak and what the words reveal or obscure.
   VOCABULARY: Voice differentiation, subtext, exposition handling, register, naturalism, tonal consistency, word economy.
-  BANNED: Character arc observations (belongs in characterNotes), structural notes.
+  BANNED: Character arc observations (belongs in characterNotes), structural notes, the word "pacing."
 
 pacingNotes →
   IDENTITY: The felt rhythm of reading — momentum, drag, propulsion.
-  VOCABULARY: Scene duration, tension rhythm, momentum, drag, propulsion, narrative interruption, beat spacing, flow.
-  BANNED: Structural architecture (belongs in structureNotes), emotional reader reactions (belongs in readerReaction).
+  VOCABULARY: Scene duration, tension rhythm, momentum, drag, propulsion, narrative interruption, beat spacing, flow, urgency, lull.
+  BANNED: Structural architecture — do not say "the scene sequencing" or "act structure" (those belong in structureNotes). Emotional reader reactions (belongs in readerReaction).
   RULE: Calibrate against ${effectiveGenre} / ${mode || "detected mode"} conventions. A contained character study has different rhythm expectations than a thriller.
+  RULE: This is the ONLY section that owns the word "pacing." All other sections must describe the consequence, not name the cause.
 
 marketabilityNotes →
-  IDENTITY: How this script positions in the current market — distinct from commercialOutlook bullets.
-  VOCABULARY: Genre accessibility, marketing hooks, audience entry points, comparable positioning, poster concept, logline clarity.
-  BANNED: Distribution strategy (belongs in commercialOutlook), craft observations.
+  IDENTITY: How this specific script positions against the current market — distinct from commercialOutlook bullets.
+  VOCABULARY: Genre accessibility, marketing hooks, logline clarity, title strength, poster concept, audience entry point, comp title positioning, pitch angle.
+  BANNED: Distribution strategy (belongs in commercialOutlook), craft observations, generic filler language.
 
 ---
 
