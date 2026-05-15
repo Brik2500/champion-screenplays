@@ -499,6 +499,105 @@ export default function AnalysisReport({ report, onReset }: Props) {
         </div>
       </div>
 
+      {/* ── Feedback ── */}
+      <FeedbackWidget title={report.title} />
+
+    </div>
+  );
+}
+
+// ── Feedback Widget ───────────────────────────────────────────────────────────
+
+function FeedbackWidget({ title }: { title: string }) {
+  const [rating, setRating] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [comment, setComment] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+
+  const handleSubmit = async () => {
+    if (!rating) return;
+    setStatus("sending");
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, rating, comment }),
+      });
+      setStatus("done");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  if (status === "done") {
+    return (
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 px-6 py-8 text-center">
+        <p className="text-2xl mb-2">🙏</p>
+        <p className="text-sm font-semibold text-white">Thanks for the feedback.</p>
+        <p className="text-xs text-zinc-500 mt-1">It helps us improve every report.</p>
+      </div>
+    );
+  }
+
+  const stars = [1, 2, 3, 4, 5];
+  const labels: Record<number, string> = {
+    1: "Missed the mark",
+    2: "Somewhat useful",
+    3: "Pretty accurate",
+    4: "Very accurate",
+    5: "Spot on",
+  };
+  const active = hovered ?? rating;
+
+  return (
+    <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 px-6 py-8">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-1">
+        Rate This Report
+      </p>
+      <p className="text-sm text-zinc-400 mb-6">
+        How accurately did this coverage reflect your script?
+      </p>
+
+      {/* Stars */}
+      <div className="flex items-center gap-1.5 mb-1">
+        {stars.map((s) => (
+          <button
+            key={s}
+            onClick={() => setRating(s)}
+            onMouseEnter={() => setHovered(s)}
+            onMouseLeave={() => setHovered(null)}
+            className="text-3xl transition-transform hover:scale-110 focus:outline-none leading-none"
+          >
+            <span className={active !== null && s <= active ? "text-amber-400" : "text-zinc-700"}>
+              ★
+            </span>
+          </button>
+        ))}
+        {active && (
+          <span className="ml-3 text-xs text-zinc-400">{labels[active]}</span>
+        )}
+      </div>
+
+      {/* Comment */}
+      <textarea
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="What could have been more accurate or useful? (optional)"
+        rows={3}
+        className="mt-5 w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm text-zinc-200 placeholder-zinc-600 focus:border-amber-500 focus:outline-none resize-none"
+      />
+
+      <button
+        onClick={handleSubmit}
+        disabled={!rating || status === "sending"}
+        className="mt-3 rounded-lg bg-amber-500 px-5 py-2 text-sm font-bold text-black hover:bg-amber-400 transition disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        {status === "sending" ? "Sending…" : "Submit Feedback"}
+      </button>
+
+      {status === "error" && (
+        <p className="mt-2 text-xs text-red-400">Something went wrong — please try again.</p>
+      )}
     </div>
   );
 }
