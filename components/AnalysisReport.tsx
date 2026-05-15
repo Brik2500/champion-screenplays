@@ -325,11 +325,14 @@ export default function AnalysisReport({ report, onReset }: Props) {
         </div>
       </div>
 
-      {/* Script Intent */}
+      {/* Script Intent — signature section */}
       {report.scriptIntent && (
-        <div className="rounded-xl border border-zinc-800/50 bg-zinc-950/60 px-5 py-4">
-          <p className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-zinc-600">What This Script Is Trying to Be</p>
-          <p className="text-sm italic leading-relaxed text-zinc-400">{report.scriptIntent}</p>
+        <div className="rounded-xl border border-amber-500/20 bg-amber-950/10 px-5 py-5"
+          style={{ boxShadow: "inset 0 0 0 1px rgba(245,158,11,0.08)" }}>
+          <p className="mb-2 text-[9px] font-bold uppercase tracking-widest text-amber-500/70">
+            What This Script Is Trying to Be
+          </p>
+          <p className="text-sm italic leading-relaxed text-zinc-300">{report.scriptIntent}</p>
         </div>
       )}
 

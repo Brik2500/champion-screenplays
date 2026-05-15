@@ -155,21 +155,26 @@ export default function ScriptForm() {
         >
           {file ? (
             <>
-              <span className="text-3xl">📄</span>
+              <span className="text-3xl">✅</span>
               <p className="font-medium text-emerald-400">{file.name}</p>
               <p className="text-xs text-zinc-500">
-                {(file.size / 1024).toFixed(0)} KB ·{" "}
-                <span className="text-amber-500 underline">Replace file</span>
+                {(file.size / 1024).toFixed(0)} KB · Ready for analysis ·{" "}
+                <span className="text-amber-500 underline">Replace</span>
               </p>
             </>
           ) : (
             <>
-              <span className="text-3xl">⬆️</span>
+              <span className="text-3xl">📄</span>
               <div>
                 <p className="font-medium text-white">Drop your script here</p>
                 <p className="mt-1 text-sm text-zinc-400">or click to browse</p>
               </div>
-              <p className="text-xs text-zinc-600">PDF · TXT · Fountain · FDX</p>
+              <div className="flex flex-wrap justify-center gap-2 mt-1">
+                {["PDF", "FDX", "Fountain", "TXT"].map((f) => (
+                  <span key={f} className="rounded border border-zinc-700 px-2 py-0.5 text-[10px] font-medium text-zinc-500">{f}</span>
+                ))}
+              </div>
+              <p className="text-[10px] text-zinc-600">Up to 10 MB · Features, Shorts, TV Pilots</p>
             </>
           )}
         </div>
@@ -196,6 +201,24 @@ export default function ScriptForm() {
       >
         {loading ? "Preparing checkout..." : "Get Coverage — $19"}
       </button>
+
+      {/* What happens next */}
+      <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-3">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 mb-2">What happens next</p>
+        <div className="flex items-start gap-6 flex-wrap">
+          {[
+            { icon: "💳", label: "Secure $19 checkout via Stripe" },
+            { icon: "⚡", label: "Analysis runs in minutes" },
+            { icon: "📋", label: "Report delivered on-screen" },
+            { icon: "📧", label: "PDF sent to your email" },
+          ].map(({ icon, label }) => (
+            <div key={label} className="flex items-center gap-1.5">
+              <span className="text-sm">{icon}</span>
+              <span className="text-[11px] text-zinc-500">{label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </form>
   );
 }

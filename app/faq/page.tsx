@@ -37,7 +37,7 @@ const faqs = [
   },
   {
     q: "Can I get a refund?",
-    a: "Because coverage is generated and delivered immediately upon payment, we are not able to offer refunds once the report has been produced. If you experience a technical issue that prevented your report from loading, contact us and we will resolve it.",
+    a: "If your report fails to generate due to a technical issue, we will refund your purchase or re-run the analysis — no questions asked. If your report delivered successfully but you disagree with the analysis or creative notes, that does not qualify for a refund. Coverage reflects a professional analytical perspective, and creative disagreement is a normal part of the development process. If something went wrong technically, email us at support@championscreenplays.com and we will make it right.",
   },
   {
     q: "Can I submit the same script more than once?",

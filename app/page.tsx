@@ -193,7 +193,41 @@ export default function Home() {
       <Divider />
 
       {/* ══════════════════════════════════════
-          SECTION 3: SAMPLE REPORT
+          SECTION 3: HOW IT WORKS
+      ══════════════════════════════════════ */}
+      <section className="py-20 sm:py-24">
+        <div className="mb-12 text-center">
+          <SectionLabel>How It Works</SectionLabel>
+          <h2 className="text-3xl font-black text-white sm:text-4xl">
+            Coverage in four steps.
+          </h2>
+          <p className="mx-auto mt-3 max-w-lg text-zinc-400">
+            No account required. No waiting. Your report is ready in minutes.
+          </p>
+        </div>
+        <div className="mx-auto max-w-3xl">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { step: "01", icon: "⬆️", title: "Upload Your Script", desc: "PDF, FDX, Fountain, or TXT. Your file is read securely and never stored." },
+              { step: "02", icon: "🎬", title: "Select Format & Genre", desc: "Feature, Short, or TV Pilot. Genre is auto-verified from your script's content." },
+              { step: "03", icon: "💳", title: "Secure Checkout", desc: "One-time $19 payment via Stripe. No subscription, no account required." },
+              { step: "04", icon: "📋", title: "Receive Your Coverage", desc: "Full development report delivered instantly on-screen and to your inbox as a PDF." },
+            ].map(({ step, icon, title, desc }) => (
+              <div key={step} className="relative rounded-xl border border-zinc-800 bg-zinc-900/40 p-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-amber-500/60 mb-3">{step}</p>
+                <span className="text-2xl mb-3 block">{icon}</span>
+                <h3 className="font-bold text-white text-sm mb-2">{title}</h3>
+                <p className="text-xs leading-relaxed text-zinc-500">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* ══════════════════════════════════════
+          SECTION 4: SAMPLE REPORT
       ══════════════════════════════════════ */}
       <section id="sample" className="py-20 sm:py-24">
         <div className="mb-10 text-center">
@@ -390,9 +424,20 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Trust line */}
-        <p className="mt-8 text-center text-xs text-zinc-600">
-          Secure upload. Your screenplay is never shared, stored, or used for training.
+        {/* Trust + refund line */}
+        <div className="mt-8 text-center space-y-2">
+          <p className="text-xs text-zinc-600">
+            Secure payment via Stripe. Your screenplay is never shared, stored, or used for training.
+          </p>
+          <p className="text-xs text-zinc-700">
+            If your report fails to generate, we will refund your purchase.{" "}
+            <a href="/faq" className="text-zinc-600 underline underline-offset-2 hover:text-zinc-400 transition">Learn more →</a>
+          </p>
+        </div>
+
+        {/* Expectation framing */}
+        <p className="mt-10 mx-auto max-w-xl text-center text-xs text-zinc-700 leading-relaxed">
+          Champion Screenplays provides professional-grade screenplay development coverage designed to simulate the analytical standards of working development readers. It is a creative development tool — not a guarantee of industry placement or success.
         </p>
       </section>
 
