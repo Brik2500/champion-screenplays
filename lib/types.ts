@@ -33,6 +33,7 @@ export interface ComparableTitle {
 export interface AnalysisReport {
   title: string;
   writerName: string;
+  genreNote?: string;
   industryVerdict: IndustryVerdict;
   scriptIntent: string;
   quickSnapshot: string[];

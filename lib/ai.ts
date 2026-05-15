@@ -133,6 +133,7 @@ function normalizeReport(raw: Record<string, unknown>): AnalysisReport {
   return {
     title: "",
     writerName: "",
+    genreNote: typeof raw.genreNote === "string" && raw.genreNote ? raw.genreNote : undefined,
     industryVerdict: {
       label: (["Recommend", "Consider", "Develop"].includes(verdict.label as string)
         ? verdict.label

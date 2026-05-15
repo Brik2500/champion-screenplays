@@ -34,13 +34,23 @@ export function buildObservationsPrompt(req: AnalyzeRequest): string {
 SCRIPT DETAILS:
 - Title: ${req.title}
 - Writer: ${req.writerName}
-- Stated Genre: ${req.genre}
+- Submitted Genre: ${req.genre}
 - Format: ${req.format}
 
-GENRE DETECTION (critical):
-Read the script and identify its actual genre based on content — tone, subject matter, story type, character conflicts.
-If the actual genre differs from the stated genre, use the ACTUAL genre for all analysis. Do not evaluate a crime thriller as a comedy just because the writer labeled it that way.
-Set "detectedGenre" to the actual genre. Set "genreMismatch" to true if it differs from the stated genre.
+GENRE DETECTION (critical — complete this before all other analysis):
+Read the full script and identify the actual genre from its content: tone, subject matter, story type, character conflicts, narrative engine, and emotional register.
+
+Rules:
+- "submittedGenre": copy the submitted genre exactly as given.
+- "detectedGenre": the single primary genre you identify from the script content.
+- "genreConflict": true if detectedGenre meaningfully differs from submittedGenre, false otherwise.
+- "genreConfidence": your confidence in the detection — "low", "medium", or "high".
+- "genreBlend": if the script is legitimately hybrid (e.g. Crime-Comedy, Sci-Fi Thriller), list the blended genres as an array. Otherwise omit or set to [].
+
+Override logic:
+- High confidence conflict → use detectedGenre exclusively for all analysis.
+- Low confidence OR clear genre blend → analyze as the blended genre, not a single override.
+- When in doubt, favor what the script actually does on the page over what the writer labeled it.
 
 ${formatRules}
 
@@ -50,8 +60,11 @@ ${req.scriptText}
 Return ONLY valid JSON. No markdown, no explanation:
 
 {
-  "detectedGenre": "<actual genre detected from the script content>",
-  "genreMismatch": <true if detected genre differs from stated genre, false otherwise>,
+  "submittedGenre": "${req.genre}",
+  "detectedGenre": "<primary genre detected from script content>",
+  "genreConflict": <true or false>,
+  "genreConfidence": "<low | medium | high>",
+  "genreBlend": ["<genre1>", "<genre2>"],
   "primaryStrengths": [
     "<2-4 specific strengths: name the character, scene, or story element and why it works>",
     "<strength>",
@@ -95,26 +108,50 @@ export function buildReportPrompt(
 ): string {
   const formatRules = FORMAT_RULES[req.format] ?? FORMAT_RULES["Feature"];
 
-  // Use detected genre if available, fall back to stated genre
-  const effectiveGenre = (typeof observations.detectedGenre === "string" && observations.detectedGenre)
-    ? observations.detectedGenre
-    : req.genre;
-  const genreMismatch = observations.genreMismatch === true;
+  const submittedGenre = req.genre;
+  const detectedGenre = typeof observations.detectedGenre === "string" ? observations.detectedGenre : req.genre;
+  const genreConflict = observations.genreConflict === true;
+  const genreConfidence = typeof observations.genreConfidence === "string" ? observations.genreConfidence : "high";
+  const genreBlend: string[] = Array.isArray(observations.genreBlend) ? observations.genreBlend as string[] : [];
+
+  // Determine the effective genre for analysis
+  const isHybrid = genreBlend.length >= 2;
+  const effectiveGenre = isHybrid
+    ? genreBlend.join("/")
+    : (genreConflict && genreConfidence !== "low")
+      ? detectedGenre
+      : submittedGenre;
+
+  // Build the genre context block
+  let genreContext = `- Genre: ${effectiveGenre}`;
+  let genreInstruction = "";
+  let genreNoteInstruction = "";
+
+  if (genreConflict && genreConfidence === "low") {
+    // Low confidence — don't override, mention the ambiguity
+    genreContext = `- Genre: ${submittedGenre} (some ${detectedGenre} elements detected — treated as submitted)`;
+  } else if (isHybrid) {
+    genreContext = `- Genre: ${effectiveGenre} (genre blend)`;
+    genreInstruction = `\nGENRE: This script is a legitimate genre blend of ${genreBlend.join(" and ")}. Analyze it as such. Comps, tone, pacing expectations, marketability, and scoring must all reflect the blended genre — not a single genre in isolation.`;
+    genreNoteInstruction = `\nInclude a "genreNote" in your JSON: "Genre Note: This script was submitted as ${submittedGenre} and reads as a ${effectiveGenre} blend. This report analyzes it through that combined lens for the most accurate coverage."`;
+  } else if (genreConflict && genreConfidence !== "low") {
+    genreContext = `- Genre: ${detectedGenre} (submitted as: ${submittedGenre})`;
+    genreInstruction = `\nGENRE OVERRIDE: The writer submitted this as "${submittedGenre}" but the script reads as "${detectedGenre}" with ${genreConfidence} confidence. Analyze it entirely as ${detectedGenre}. This affects comparable titles, marketability, pacing expectations, tone analysis, character evaluation, commercial outlook, and scoring. Do not evaluate it through a ${submittedGenre} lens at any point.`;
+    genreNoteInstruction = `\nInclude a "genreNote" in your JSON: "Genre Note: This script was submitted as ${submittedGenre}, but it reads primarily as ${detectedGenre}. This report analyzes it through the detected genre lens for more accurate coverage." Make it sound helpful and informative — not like an error or criticism.`;
+  }
 
   const obs = JSON.stringify(observations, null, 2);
-
-  const genreNote = genreMismatch
-    ? `\nGENRE NOTE: The writer submitted this as "${req.genre}" but the script reads as "${effectiveGenre}". Analyze it as ${effectiveGenre}. Include a brief, professional note in the scoreJustification informing the writer of the detected genre.`
-    : "";
 
   return `You are a senior script analyst at a major streaming production company. You are writing the final professional coverage report for this screenplay. Your analytical foundation has already been established in the INTERNAL OBSERVATIONS below — use them as your primary source of truth. Do NOT invent details not present in the observations.
 
 SCRIPT DETAILS:
 - Title: ${req.title}
 - Writer: ${req.writerName}
-- Genre: ${effectiveGenre}${genreMismatch ? ` (submitted as: ${req.genre})` : ""}
+${genreContext}
 - Format: ${req.format}
-${genreNote}
+${genreInstruction}
+${genreNoteInstruction}
+
 ${formatRules}
 
 INTERNAL STORY OBSERVATIONS (your complete analytical foundation — use these exclusively):
@@ -138,6 +175,7 @@ SCORING:
   60–69:  Interesting concept with notable execution problems.
   Below 60: Major structural or storytelling issues.
 Score what is on the page. Written analysis and score must match.
+Genre affects scoring calibration: score against the expectations of ${effectiveGenre}, not ${submittedGenre !== effectiveGenre ? submittedGenre : "a different genre"}.
 
 VERDICT:
   RECOMMEND: 90+: submission or market ready.
@@ -174,9 +212,11 @@ premiseFeedback → Core concept evaluation: uniqueness, hook strength, scalabil
   thematic potential, pitch clarity. Is it commercially viable and pitchable?
 
 categoryScores → Score each domain independently using the INTERNAL OBSERVATIONS as calibration.
+  All scores must reflect ${effectiveGenre} genre expectations.
 
-comparableTitles → Format-matched comps ONLY. Justify each with a specific tonal,
-  structural, thematic, or audience parallel. Not "similar themes": name the actual similarity.
+comparableTitles → Format-matched comps ONLY. Must match the ${effectiveGenre} genre.
+  Justify each with a specific tonal, structural, thematic, or audience parallel.
+  Not "similar themes": name the actual similarity.
 
 commercialOutlook → Market positioning ONLY: streamer appeal, audience demographics,
   binge potential, budget tier, platform fit, episodic sustainability.
@@ -197,16 +237,19 @@ characterNotes → Motivations, internal arcs, relationship dynamics, emotional 
 dialogueNotes → Voice differentiation, exposition problems, realism, tonal consistency, subtext.
 
 pacingNotes → Rhythm, momentum, drag points, narrative interruptions, scene flow.
+  Pacing expectations must match ${effectiveGenre} genre conventions.
   Each observation must be distinct from structure or reader reaction notes.
 
 marketabilityNotes → Positioning, genre accessibility, audience reach, commercial clarity,
   marketing hooks. Distinct from commercialOutlook bullets.
+  Marketability must be evaluated against the ${effectiveGenre} market, not ${submittedGenre !== effectiveGenre ? submittedGenre : "a different genre"}.
 
 ---
 
 Return ONLY valid JSON. No markdown, no code fences:
 
 {
+  "genreNote": "<include only if genreConflict is true or script is a genre blend — otherwise omit this field entirely>",
   "industryVerdict": {
     "label": "Recommend" | "Consider" | "Develop",
     "rationale": "<1–2 direct sentences. Execution quality + commercial readiness. No poetic language.>"
@@ -236,7 +279,7 @@ Return ONLY valid JSON. No markdown, no code fences:
     "marketability": <0–100>
   },
   "comparableTitles": [
-    { "title": "<format-matched comp>", "reason": "<specific tonal, structural, thematic, or audience parallel>" },
+    { "title": "<${effectiveGenre}-appropriate comp>", "reason": "<specific tonal, structural, thematic, or audience parallel>" },
     { "title": "<comp>", "reason": "<parallel>" },
     { "title": "<comp>", "reason": "<parallel>" }
   ],

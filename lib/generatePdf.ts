@@ -138,6 +138,26 @@ export async function generateReportPdf(report: AnalysisReport): Promise<Buffer>
     doc.y = 138;
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // GENRE NOTE (only if genre was corrected)
+    // ═══════════════════════════════════════════════════════════════════════════
+    if (report.genreNote) {
+      doc.rect(LEFT, doc.y, W, 1).fillColor("#f59e0b").fill();
+      resetX();
+      doc.moveDown(0.5);
+      doc.fontSize(8).fillColor(AMBER).font("Helvetica-Bold")
+        .text("ℹ️  GENRE DETECTED", LEFT, doc.y, { width: W });
+      resetX();
+      doc.moveDown(0.2);
+      doc.fontSize(8).fillColor(MUTED).font("Helvetica")
+        .text(report.genreNote, LEFT, doc.y, { width: W, lineGap: 2 });
+      resetX();
+      doc.moveDown(0.5);
+      doc.rect(LEFT, doc.y, W, 1).fillColor("#f59e0b").fill();
+      resetX();
+      doc.moveDown(0.8);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // VERDICT
     // ═══════════════════════════════════════════════════════════════════════════
     sectionLabel("Industry Verdict");
