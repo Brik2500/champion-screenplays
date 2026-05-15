@@ -34,8 +34,13 @@ export function buildObservationsPrompt(req: AnalyzeRequest): string {
 SCRIPT DETAILS:
 - Title: ${req.title}
 - Writer: ${req.writerName}
-- Genre: ${req.genre}
+- Stated Genre: ${req.genre}
 - Format: ${req.format}
+
+GENRE DETECTION (critical):
+Read the script and identify its actual genre based on content — tone, subject matter, story type, character conflicts.
+If the actual genre differs from the stated genre, use the ACTUAL genre for all analysis. Do not evaluate a crime thriller as a comedy just because the writer labeled it that way.
+Set "detectedGenre" to the actual genre. Set "genreMismatch" to true if it differs from the stated genre.
 
 ${formatRules}
 
@@ -45,6 +50,8 @@ ${req.scriptText}
 Return ONLY valid JSON. No markdown, no explanation:
 
 {
+  "detectedGenre": "<actual genre detected from the script content>",
+  "genreMismatch": <true if detected genre differs from stated genre, false otherwise>,
   "primaryStrengths": [
     "<2-4 specific strengths: name the character, scene, or story element and why it works>",
     "<strength>",
@@ -88,16 +95,26 @@ export function buildReportPrompt(
 ): string {
   const formatRules = FORMAT_RULES[req.format] ?? FORMAT_RULES["Feature"];
 
+  // Use detected genre if available, fall back to stated genre
+  const effectiveGenre = (typeof observations.detectedGenre === "string" && observations.detectedGenre)
+    ? observations.detectedGenre
+    : req.genre;
+  const genreMismatch = observations.genreMismatch === true;
+
   const obs = JSON.stringify(observations, null, 2);
+
+  const genreNote = genreMismatch
+    ? `\nGENRE NOTE: The writer submitted this as "${req.genre}" but the script reads as "${effectiveGenre}". Analyze it as ${effectiveGenre}. Include a brief, professional note in the scoreJustification informing the writer of the detected genre.`
+    : "";
 
   return `You are a senior script analyst at a major streaming production company. You are writing the final professional coverage report for this screenplay. Your analytical foundation has already been established in the INTERNAL OBSERVATIONS below — use them as your primary source of truth. Do NOT invent details not present in the observations.
 
 SCRIPT DETAILS:
 - Title: ${req.title}
 - Writer: ${req.writerName}
-- Genre: ${req.genre}
+- Genre: ${effectiveGenre}${genreMismatch ? ` (submitted as: ${req.genre})` : ""}
 - Format: ${req.format}
-
+${genreNote}
 ${formatRules}
 
 INTERNAL STORY OBSERVATIONS (your complete analytical foundation — use these exclusively):
