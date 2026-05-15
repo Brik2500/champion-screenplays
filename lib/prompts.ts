@@ -38,19 +38,20 @@ SCRIPT DETAILS:
 - Format: ${req.format}
 
 GENRE DETECTION (critical — complete this before all other analysis):
-Read the full script and identify the actual genre from its content: tone, subject matter, story type, character conflicts, narrative engine, and emotional register.
+Read the full script and identify the actual genre purely from its content: tone, subject matter, story type, character conflicts, narrative engine, and emotional register. Ignore the submitted genre completely during detection.
 
 Rules:
 - "submittedGenre": copy the submitted genre exactly as given.
-- "detectedGenre": the single primary genre you identify from the script content.
+- "detectedGenre": the single primary genre you identify from the script content ALONE — do not let the submitted genre influence this.
 - "genreConflict": true if detectedGenre meaningfully differs from submittedGenre, false otherwise.
 - "genreConfidence": your confidence in the detection — "low", "medium", or "high".
-- "genreBlend": if the script is legitimately hybrid (e.g. Crime-Comedy, Sci-Fi Thriller), list the blended genres as an array. Otherwise omit or set to [].
+- "genreBlend": ONLY use this if the script itself contains two genuinely co-equal genre modes (e.g. a Crime-Comedy that has equal parts crime and comedy). Do NOT blend just because the writer submitted a different genre — that is a conflict, not a blend. If the script is clearly one genre that was mislabeled, set genreConflict to true and leave genreBlend empty.
 
 Override logic:
-- High confidence conflict → use detectedGenre exclusively for all analysis.
-- Low confidence OR clear genre blend → analyze as the blended genre, not a single override.
-- When in doubt, favor what the script actually does on the page over what the writer labeled it.
+- High or medium confidence conflict → use detectedGenre exclusively. Do not incorporate the submitted genre.
+- Genuine hybrid script (equal genre modes, both present on the page) → use the blend.
+- Low confidence only → analyze as submitted, note the ambiguity.
+- Default to what the script does on the page, not what the writer called it.
 
 ${formatRules}
 
