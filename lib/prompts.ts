@@ -205,67 +205,103 @@ VERDICT:
   DEVELOP:   Below 75: promising foundation, substantial refinement required.
 Exception: CONSIDER may apply below 75 if the concept is highly commercial and execution is weaker than the idea.
 
-ANTI-REPETITION PROTOCOL (CRITICAL):
-Each section has an exclusive analytical domain. If an issue spans multiple sections,
-each section must discuss a DIFFERENT DIMENSION of that issue.
+ROOT-CAUSE HIERARCHY (do this before writing any section):
+Identify the 2–3 dominant script problems from the observations. For each one, name the root cause.
+Then assign each root cause a DIFFERENT analytical lens across sections — never the same lens twice.
 
-Example for a flashback pacing issue:
-  Reader Reaction → "The flashbacks interrupt emotional momentum."
-  Structure → "The flashbacks fragment the forward narrative drive."
-  Pacing → "The flashback-to-present transitions disrupt scene rhythm."
-  Commercial Outlook → "The pacing interruptions may reduce binge retention."
+Example — root cause: "overuse of flashbacks"
+  Structure lens    → how flashbacks disrupt narrative architecture and act progression
+  Pacing lens       → how flashback-to-present transitions kill scene momentum
+  Reader Reaction   → where the audience loses emotional thread because of time jumps
+  Commercial lens   → how structural fragmentation affects acquisition pitch clarity
 
-SECTION DOMAINS (strictly enforce):
+Every section sees the same root problem through a completely different window.
+This is what separates analysis from repetition.
 
-quickSnapshot → High-level skimmable bullets. Strongest commercial/story insight first.
-  NO deep analysis. NO structural terminology. Skimmable only.
+SELF-AUDIT RULE (apply before writing each section):
+Before writing any section, ask: "Have I already named this observation in a previous section?"
+If yes — do NOT restate it. Find a different angle or leave it out.
+Repeating the same observation in different words is the most detectable sign of AI-generated coverage.
+Real analysts vary angle, emphasis, vocabulary, and focus — even when discussing connected problems.
 
-executiveSummary → Overall professional evaluation: viability, development readiness,
-  high-level strengths and weaknesses. Concise. Sharp. No plot summary.
+SECTION IDENTITY (each section owns a unique analytical territory — enforce strictly):
 
-readerReaction → Emotional audience experience only: engagement, confusion, anticipation,
-  fatigue, emotional investment. Reference character names and story moments.
-  NO commercial positioning. NO structural terminology. Human reaction first.
+quickSnapshot →
+  IDENTITY: Executive skimming layer. What a busy reader needs in 10 seconds.
+  VOCABULARY: Hook, premise strength, character appeal, tonal clarity, market position.
+  BANNED: Deep analysis, structural terminology, craft observations, repeated weakness lists.
 
-scriptIntent → What this script is trying to be: audience positioning, platform fit,
-  tonal ambition, storytelling identity. 1–2 sentences. Executive one-pager voice.
+executiveSummary →
+  IDENTITY: Development memo. Overall viability verdict with specific evidence.
+  VOCABULARY: Development readiness, narrative ambition, execution gap, commercial positioning.
+  BANNED: Plot summary, emotional reader reactions, granular craft notes.
 
-premiseFeedback → Core concept evaluation: uniqueness, hook strength, scalability,
-  thematic potential, pitch clarity. Is it commercially viable and pitchable?
+readerReaction →
+  IDENTITY: The human experience of reading this script. Emotion only.
+  VOCABULARY: Curiosity, engagement, confusion, frustration, anticipation, investment, surprise, fatigue.
+  BANNED: Commercial language, structural terminology ("act two", "midpoint"), market positioning.
+  RULE: Reference character names and specific story moments. Never speak in abstractions.
 
-categoryScores → Score each domain independently using the INTERNAL OBSERVATIONS as calibration.
+scriptIntent →
+  IDENTITY: What this script is trying to be. One-pager positioning voice.
+  VOCABULARY: Platform fit, audience target, tonal ambition, storytelling identity.
+  BANNED: Execution notes, weaknesses, craft observations.
+
+premiseFeedback →
+  IDENTITY: Is the concept itself strong, pitchable, and commercially viable?
+  VOCABULARY: Hook clarity, concept uniqueness, pitch strength, scalability, thematic potential.
+  BANNED: Execution notes, character arcs, craft observations. Concept only.
+
+categoryScores →
+  IDENTITY: Independent numerical calibration of each craft domain.
   All scores calibrated to: ${effectiveGenre}${secondaryGenre ? ` / ${secondaryGenre}` : ""}, ${tone.join(" / ") || "as detected"}, ${mode || "as detected"}.
 
-comparableTitles → Format-matched comps ONLY. Match primary genre (${effectiveGenre})${tone.length ? ` and tone (${tone.join(" / ")})` : ""}.
-  Justify each with a specific tonal, structural, thematic, or audience parallel.
-  Not "similar themes": name the actual similarity.
+comparableTitles →
+  IDENTITY: Market positioning through specific analogues.
+  Must match primary genre (${effectiveGenre})${tone.length ? ` and tone (${tone.join(" / ")})` : ""}.
+  RULE: Name the specific tonal, structural, thematic, or audience parallel — not "similar themes."
 
-commercialOutlook → Market positioning ONLY: streamer appeal, audience demographics,
-  binge potential, budget tier, platform fit, episodic sustainability.
-  Do NOT repeat emotional or structural observations unless discussing commercial consequences.
+commercialOutlook →
+  IDENTITY: Market positioning only. Acquisition, distribution, audience, budget tier.
+  VOCABULARY: Release strategy, audience quadrant, acquisition appeal, budget tier, platform fit, actor appeal.
+  BANNED: Emotional reactions, structural notes, craft observations, character analysis.
+  RULE: Only reference execution problems if they have a direct commercial consequence — and state that consequence explicitly.
 
-strengths → Use primaryStrengths from observations as anchors. Explain WHY each works
-  and WHAT value it creates. Do not introduce unanchored new strengths.
+strengths →
+  IDENTITY: What works and why it creates value.
+  RULE: Anchored to primaryStrengths from observations. Name the element, explain WHY it works, state WHAT value it creates for the audience or market.
+  BANNED: Restating weaknesses. Each bullet must be a genuine positive with a specific effect.
 
-weaknesses → Use primaryWeaknesses from observations as anchors. State root cause
-  and audience consequence. Do not repeat language used in craft sections.
+weaknesses →
+  IDENTITY: Root causes and their audience consequences.
+  RULE: Anchored to primaryWeaknesses. Name the element, its root cause, and its consequence on the audience experience.
+  BANNED: Language already used in structureNotes, pacingNotes, or other craft sections.
 
-structureNotes → Narrative construction ONLY: escalation, sequencing, scene progression,
-  turning points, transitions. Do NOT repeat emotional audience reactions.
+structureNotes →
+  IDENTITY: Narrative architecture only.
+  VOCABULARY: Act progression, escalation, scene sequencing, turning points, midpoint, transitions, narrative logic, cause-and-effect chain.
+  BANNED: Emotional audience reactions (those belong in readerReaction), pacing rhythm (belongs in pacingNotes).
 
-characterNotes → Motivations, internal arcs, relationship dynamics, emotional consistency.
-  Use characterDynamics from observations as context.
+characterNotes →
+  IDENTITY: Who these people are and how they behave on the page.
+  VOCABULARY: Motivation clarity, internal arc, want vs. need, relationship dynamics, behavioral consistency, emotional truth.
+  BANNED: Dialogue quality (belongs in dialogueNotes), structural observations.
 
-dialogueNotes → Voice differentiation, exposition problems, realism, tonal consistency, subtext.
+dialogueNotes →
+  IDENTITY: How characters speak and what the words reveal or obscure.
+  VOCABULARY: Voice differentiation, subtext, exposition handling, register, naturalism, tonal consistency, word economy.
+  BANNED: Character arc observations (belongs in characterNotes), structural notes.
 
-pacingNotes → Rhythm, momentum, drag points, narrative interruptions, scene flow.
-  Pacing must be evaluated against ${effectiveGenre} / ${mode || "detected mode"} conventions — not generic feature film pacing.
-  A contained character study has different rhythm expectations than a thriller. Calibrate accordingly.
-  Each observation must be distinct from structure or reader reaction notes.
+pacingNotes →
+  IDENTITY: The felt rhythm of reading — momentum, drag, propulsion.
+  VOCABULARY: Scene duration, tension rhythm, momentum, drag, propulsion, narrative interruption, beat spacing, flow.
+  BANNED: Structural architecture (belongs in structureNotes), emotional reader reactions (belongs in readerReaction).
+  RULE: Calibrate against ${effectiveGenre} / ${mode || "detected mode"} conventions. A contained character study has different rhythm expectations than a thriller.
 
-marketabilityNotes → Positioning, genre accessibility, audience reach, commercial clarity,
-  marketing hooks. Distinct from commercialOutlook bullets.
-  Evaluate marketability against the ${effectiveGenre}${tone.length ? ` (${tone.join(" / ")})` : ""} market specifically.
+marketabilityNotes →
+  IDENTITY: How this script positions in the current market — distinct from commercialOutlook bullets.
+  VOCABULARY: Genre accessibility, marketing hooks, audience entry points, comparable positioning, poster concept, logline clarity.
+  BANNED: Distribution strategy (belongs in commercialOutlook), craft observations.
 
 ---
 
