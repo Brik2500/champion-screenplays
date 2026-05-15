@@ -37,21 +37,29 @@ SCRIPT DETAILS:
 - Submitted Genre: ${req.genre}
 - Format: ${req.format}
 
-GENRE DETECTION (critical — complete this before all other analysis):
-Read the full script and identify the actual genre purely from its content: tone, subject matter, story type, character conflicts, narrative engine, and emotional register. Ignore the submitted genre completely during detection.
+SCRIPT PROFILE DETECTION (critical — complete this before all other analysis):
+Read the full script and build a precise profile from its content alone. Ignore the submitted genre completely during this step.
 
-Rules:
+Detect four things:
+
+1. PRIMARY GENRE — the dominant genre driving the narrative engine (e.g. Crime Thriller, Psychological Horror, Coming-of-Age Drama, Action Comedy). One genre only.
+
+2. SECONDARY GENRE — a meaningful supporting genre layer present in the script (e.g. Character Drama, Family Drama, Procedural, Romantic Subplot). One genre. Omit if there is no meaningful secondary layer.
+
+3. TONE — 2–4 specific tonal descriptors that define the script's emotional register (e.g. Dark / Gritty / Psychological, Light / Satirical / Absurdist, Tense / Paranoid / Claustrophobic). Be specific — "dark" alone is not enough.
+
+4. MODE — the storytelling mode or structural identity of the script (e.g. Contained Character Study, Ensemble Crime Procedural, Road Movie, Single-Location Thriller, Episodic Coming-of-Age). This is how the story is built, not what it's about.
+
+Genre override rules:
 - "submittedGenre": copy the submitted genre exactly as given.
-- "detectedGenre": the single primary genre you identify from the script content ALONE — do not let the submitted genre influence this.
+- "detectedGenre": the primaryGenre you detected — script content only, not the submitted label.
 - "genreConflict": true if detectedGenre meaningfully differs from submittedGenre, false otherwise.
-- "genreConfidence": your confidence in the detection — "low", "medium", or "high".
-- "genreBlend": ONLY use this if the script itself contains two genuinely co-equal genre modes (e.g. a Crime-Comedy that has equal parts crime and comedy). Do NOT blend just because the writer submitted a different genre — that is a conflict, not a blend. If the script is clearly one genre that was mislabeled, set genreConflict to true and leave genreBlend empty.
-
-Override logic:
-- High or medium confidence conflict → use detectedGenre exclusively. Do not incorporate the submitted genre.
-- Genuine hybrid script (equal genre modes, both present on the page) → use the blend.
-- Low confidence only → analyze as submitted, note the ambiguity.
-- Default to what the script does on the page, not what the writer called it.
+- "genreConfidence": your confidence — "low", "medium", or "high".
+- "genreBlend": ONLY if the script has two genuinely co-equal genre modes both fully present on the page. Do NOT blend just because the writer mislabeled — that is a conflict. Leave empty if it is a mislabel.
+- High or medium confidence conflict → use detectedGenre exclusively. No incorporation of the submitted genre.
+- Genuine co-equal hybrid → use the blend.
+- Low confidence only → analyze as submitted, flag the ambiguity.
+- Always default to what the script does on the page.
 
 ${formatRules}
 
@@ -62,7 +70,10 @@ Return ONLY valid JSON. No markdown, no explanation:
 
 {
   "submittedGenre": "${req.genre}",
-  "detectedGenre": "<primary genre detected from script content>",
+  "detectedGenre": "<primary genre detected from script content alone>",
+  "secondaryGenre": "<secondary genre layer if meaningfully present, otherwise omit>",
+  "tone": ["<tonal descriptor>", "<tonal descriptor>", "<tonal descriptor>"],
+  "mode": "<storytelling mode — how the story is structurally built>",
   "genreConflict": <true or false>,
   "genreConfidence": "<low | medium | high>",
   "genreBlend": ["<genre1>", "<genre2>"],
@@ -111,6 +122,9 @@ export function buildReportPrompt(
 
   const submittedGenre = req.genre;
   const detectedGenre = typeof observations.detectedGenre === "string" ? observations.detectedGenre : req.genre;
+  const secondaryGenre = typeof observations.secondaryGenre === "string" ? observations.secondaryGenre : "";
+  const tone: string[] = Array.isArray(observations.tone) ? observations.tone as string[] : [];
+  const mode = typeof observations.mode === "string" ? observations.mode : "";
   const genreConflict = observations.genreConflict === true;
   const genreConfidence = typeof observations.genreConfidence === "string" ? observations.genreConfidence : "high";
   const genreBlend: string[] = Array.isArray(observations.genreBlend) ? observations.genreBlend as string[] : [];
@@ -123,21 +137,25 @@ export function buildReportPrompt(
       ? detectedGenre
       : submittedGenre;
 
+  // Build full script profile string for the prompt
+  const profileLines = [
+    `- Primary Genre: ${effectiveGenre}`,
+    secondaryGenre ? `- Secondary Genre: ${secondaryGenre}` : "",
+    tone.length ? `- Tone: ${tone.join(" / ")}` : "",
+    mode ? `- Mode: ${mode}` : "",
+  ].filter(Boolean).join("\n");
+
   // Build the genre context block
-  let genreContext = `- Genre: ${effectiveGenre}`;
   let genreInstruction = "";
   let genreNoteInstruction = "";
 
   if (genreConflict && genreConfidence === "low") {
-    // Low confidence — don't override, mention the ambiguity
-    genreContext = `- Genre: ${submittedGenre} (some ${detectedGenre} elements detected — treated as submitted)`;
+    genreInstruction = `\nGENRE NOTE: Some ${detectedGenre} elements were detected but confidence is low — analyzing as submitted (${submittedGenre}).`;
   } else if (isHybrid) {
-    genreContext = `- Genre: ${effectiveGenre} (genre blend)`;
-    genreInstruction = `\nGENRE: This script is a legitimate genre blend of ${genreBlend.join(" and ")}. Analyze it as such. Comps, tone, pacing expectations, marketability, and scoring must all reflect the blended genre — not a single genre in isolation.`;
+    genreInstruction = `\nGENRE: This script is a legitimate blend of ${genreBlend.join(" and ")}. Analyze it as such. Comps, tone, pacing expectations, marketability, and scoring must reflect the full blended profile above — not a single genre in isolation.`;
     genreNoteInstruction = `\nInclude a "genreNote" in your JSON: "Genre Note: This script was submitted as ${submittedGenre} and reads as a ${effectiveGenre} blend. This report analyzes it through that combined lens for the most accurate coverage."`;
   } else if (genreConflict && genreConfidence !== "low") {
-    genreContext = `- Genre: ${detectedGenre} (submitted as: ${submittedGenre})`;
-    genreInstruction = `\nGENRE OVERRIDE: The writer submitted this as "${submittedGenre}" but the script reads as "${detectedGenre}" with ${genreConfidence} confidence. Analyze it entirely as ${detectedGenre}. This affects comparable titles, marketability, pacing expectations, tone analysis, character evaluation, commercial outlook, and scoring. Do not evaluate it through a ${submittedGenre} lens at any point.`;
+    genreInstruction = `\nGENRE OVERRIDE: Submitted as "${submittedGenre}" — detected as "${detectedGenre}" with ${genreConfidence} confidence. Analyze entirely through the script profile above. Do not apply ${submittedGenre} genre expectations anywhere in the report. This override affects: comparable titles, pacing benchmarks, tone analysis, character evaluation, marketability, commercial outlook, and scoring calibration.`;
     genreNoteInstruction = `\nInclude a "genreNote" in your JSON: "Genre Note: This script was submitted as ${submittedGenre}, but it reads primarily as ${detectedGenre}. This report analyzes it through the detected genre lens for more accurate coverage." Make it sound helpful and informative — not like an error or criticism.`;
   }
 
@@ -148,8 +166,8 @@ export function buildReportPrompt(
 SCRIPT DETAILS:
 - Title: ${req.title}
 - Writer: ${req.writerName}
-${genreContext}
 - Format: ${req.format}
+${profileLines}
 ${genreInstruction}
 ${genreNoteInstruction}
 
@@ -176,7 +194,9 @@ SCORING:
   60–69:  Interesting concept with notable execution problems.
   Below 60: Major structural or storytelling issues.
 Score what is on the page. Written analysis and score must match.
-Genre affects scoring calibration: score against the expectations of ${effectiveGenre}, not ${submittedGenre !== effectiveGenre ? submittedGenre : "a different genre"}.
+Scoring calibration must use the full script profile:
+  Primary genre: ${effectiveGenre}${secondaryGenre ? ` | Secondary: ${secondaryGenre}` : ""}${tone.length ? ` | Tone: ${tone.join(" / ")}` : ""}${mode ? ` | Mode: ${mode}` : ""}
+Score pacing, structure, and marketability against what this specific genre/tone/mode demands — not generic expectations.
 
 VERDICT:
   RECOMMEND: 90+: submission or market ready.
@@ -213,9 +233,9 @@ premiseFeedback → Core concept evaluation: uniqueness, hook strength, scalabil
   thematic potential, pitch clarity. Is it commercially viable and pitchable?
 
 categoryScores → Score each domain independently using the INTERNAL OBSERVATIONS as calibration.
-  All scores must reflect ${effectiveGenre} genre expectations.
+  All scores calibrated to: ${effectiveGenre}${secondaryGenre ? ` / ${secondaryGenre}` : ""}, ${tone.join(" / ") || "as detected"}, ${mode || "as detected"}.
 
-comparableTitles → Format-matched comps ONLY. Must match the ${effectiveGenre} genre.
+comparableTitles → Format-matched comps ONLY. Match primary genre (${effectiveGenre})${tone.length ? ` and tone (${tone.join(" / ")})` : ""}.
   Justify each with a specific tonal, structural, thematic, or audience parallel.
   Not "similar themes": name the actual similarity.
 
@@ -238,12 +258,13 @@ characterNotes → Motivations, internal arcs, relationship dynamics, emotional 
 dialogueNotes → Voice differentiation, exposition problems, realism, tonal consistency, subtext.
 
 pacingNotes → Rhythm, momentum, drag points, narrative interruptions, scene flow.
-  Pacing expectations must match ${effectiveGenre} genre conventions.
+  Pacing must be evaluated against ${effectiveGenre} / ${mode || "detected mode"} conventions — not generic feature film pacing.
+  A contained character study has different rhythm expectations than a thriller. Calibrate accordingly.
   Each observation must be distinct from structure or reader reaction notes.
 
 marketabilityNotes → Positioning, genre accessibility, audience reach, commercial clarity,
   marketing hooks. Distinct from commercialOutlook bullets.
-  Marketability must be evaluated against the ${effectiveGenre} market, not ${submittedGenre !== effectiveGenre ? submittedGenre : "a different genre"}.
+  Evaluate marketability against the ${effectiveGenre}${tone.length ? ` (${tone.join(" / ")})` : ""} market specifically.
 
 ---
 
