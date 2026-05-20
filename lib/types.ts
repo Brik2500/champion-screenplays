@@ -2,6 +2,7 @@ export interface AnalyzeRequest {
   title: string;
   writerName: string;
   genre: string;
+  secondaryGenre?: string;
   format: "Feature" | "Short" | "TV Pilot";
   scriptText: string;
 }

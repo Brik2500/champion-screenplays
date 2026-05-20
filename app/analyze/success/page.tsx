@@ -46,6 +46,7 @@ function SuccessInner() {
           title: string;
           writerName: string;
           genre: string;
+          secondaryGenre?: string;
           format: string;
           email: string;
           fileName: string;
@@ -67,6 +68,7 @@ function SuccessInner() {
         body.append("title", stored.title);
         body.append("writerName", stored.writerName);
         body.append("genre", stored.genre);
+        if (stored.secondaryGenre) body.append("secondaryGenre", stored.secondaryGenre);
         body.append("format", stored.format);
         body.append("file", file);
 

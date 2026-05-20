@@ -16,6 +16,7 @@ export default function ScriptForm() {
   const [title, setTitle] = useState("");
   const [writerName, setWriterName] = useState("");
   const [genre, setGenre] = useState("");
+  const [secondaryGenre, setSecondaryGenre] = useState("");
   const [format, setFormat] = useState<"Feature" | "Short" | "TV Pilot">("Feature");
   const [email, setEmail] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -61,6 +62,7 @@ export default function ScriptForm() {
           title,
           writerName,
           genre,
+          secondaryGenre: secondaryGenre || undefined,
           format,
           email: email.toLowerCase().trim(),
           fileName: file.name,
@@ -72,7 +74,7 @@ export default function ScriptForm() {
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, writerName, genre, format, email: email.toLowerCase().trim() }),
+        body: JSON.stringify({ title, writerName, genre, secondaryGenre: secondaryGenre || undefined, format, email: email.toLowerCase().trim() }),
       });
 
       if (!res.ok) {
@@ -111,10 +113,23 @@ export default function ScriptForm() {
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-zinc-300">Genre</label>
-          <select required value={genre} onChange={(e) => setGenre(e.target.value)} className={inputClass}>
+          <label className="mb-1.5 block text-sm font-medium text-zinc-300">Primary Genre</label>
+          <select required value={genre} onChange={(e) => { setGenre(e.target.value); if (e.target.value === secondaryGenre) setSecondaryGenre(""); }} className={inputClass}>
             <option value="" disabled>Select genre...</option>
             {GENRES.map((g) => <option key={g} value={g}>{g}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-zinc-300">
+            Secondary Genre <span className="text-zinc-500 font-normal">— optional</span>
+          </label>
+          <select
+            value={secondaryGenre}
+            onChange={(e) => setSecondaryGenre(e.target.value)}
+            className={inputClass}
+          >
+            <option value="">None (single genre)</option>
+            {GENRES.filter((g) => g !== genre).map((g) => <option key={g} value={g}>{g}</option>)}
           </select>
         </div>
         <div>

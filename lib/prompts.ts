@@ -35,11 +35,11 @@ export function buildObservationsPrompt(req: AnalyzeRequest): string {
 SCRIPT DETAILS:
 - Title: ${req.title}
 - Writer: ${req.writerName}
-- Submitted Genre: ${req.genre}
+- Submitted Primary Genre: ${req.genre}${req.secondaryGenre ? `\n- Submitted Secondary Genre (writer-flagged blend): ${req.secondaryGenre}` : ""}
 - Format: ${req.format}
 
 SCRIPT PROFILE DETECTION (critical — complete this before all other analysis):
-Read the full script and build a precise profile from its content alone. Ignore the submitted genre completely during this step.
+Read the full script and build a precise profile from its content alone. The submitted genre(s) above are writer-provided labels — treat them as signals to investigate, not as ground truth.${req.secondaryGenre ? ` The writer has flagged this as a genre blend (${req.genre} / ${req.secondaryGenre}) — actively look for both layers in the content and confirm or contradict that blend based on what is on the page.` : " Ignore the submitted genre completely during this step."}
 
 Detect four things:
 
@@ -224,6 +224,29 @@ If yes — do NOT restate it. Find a different angle or leave it out.
 Repeating the same observation in different words is the most detectable sign of AI-generated coverage.
 Real analysts vary angle, emphasis, vocabulary, and focus — even when discussing connected problems.
 
+OBSERVATION BUDGET (hard cap — applies to BOTH strengths AND weaknesses — enforce mechanically):
+Every named observation — positive or negative — gets a MENTION BUDGET of 3 sections maximum across the entire report.
+Once an observation (e.g. "the sisterly relationship creates a compelling emotional core," "inconsistent tone," "authentic dialogue") has appeared in 3 sections, ALL subsequent sections MUST identify something genuinely different through their specific analytical lens.
+
+A single observation appearing in more than 4 sections without new analytical manifestation significantly weakens report quality and must be avoided.
+
+NO SENTENCE CLONING: Never repeat the same sentence or near-identical phrasing across sections. Each section must contribute a new idea. Paraphrasing the same observation is not acceptable — it must be a different observation.
+  WRONG: "The sisterly relationship between Adena and Sarai creates a compelling emotional core" in the snapshot, summary, strengths, structure notes, AND character notes.
+  RIGHT: Each section finds a different angle:
+    Snapshot          → one-line hook ("two sisters navigating competing definitions of family loyalty")
+    Strengths         → WHY it works and what value it creates for the audience
+    Character notes   → HOW the dynamic is constructed on the page — behavioral specifics, want vs. need, moment of rupture
+    Structure notes   → WHERE the relationship drives narrative architecture — which act turns it anchors
+  Each section teaches something new. Restating the same observation teaches nothing.
+
+MANIFESTATION RULE: When a critique DOES recur across sections, each instance must describe the SPECIFIC MANIFESTATION in that domain — not just repeat the label.
+  WRONG: "tone is inconsistent" in structure notes, dialogue notes, AND pacing notes.
+  RIGHT:
+    Structure notes   → "the cold open establishes a grounded domestic register that the third-act tonal pivot hasn't been architecturally prepared for"
+    Dialogue notes    → "characters shift from naturalistic family speech to heightened dramatic declaration without clear emotional trigger"
+    Pacing notes      → "the tonal pivot arrives mid-scene rather than at a structural beat, creating a rhythm disruption the reader feels before they can name it"
+  Each instance teaches something new. Repeating the label teaches nothing.
+
 SECTION IDENTITY (each section owns a unique analytical territory — enforce strictly):
 
 quickSnapshot →
@@ -307,6 +330,8 @@ marketabilityNotes →
   BANNED: Distribution strategy (belongs in commercialOutlook), craft observations, generic filler language.
 
 ---
+
+BEFORE YOU WRITE A SINGLE FIELD: List your 3 dominant observations (strengths) and 3 dominant critiques (weaknesses) mentally. Assign each one to its PRIMARY section. Every other section must find a different angle or go deeper — never restate. No sentence may appear more than once across the entire report.
 
 Return ONLY valid JSON. No markdown, no code fences:
 

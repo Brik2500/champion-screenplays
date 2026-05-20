@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
     const title = data.get("title") as string;
     const writerName = data.get("writerName") as string;
     const genre = data.get("genre") as string;
+    const secondaryGenre = (data.get("secondaryGenre") as string | null) ?? undefined;
     const format = data.get("format") as "Feature" | "Short" | "TV Pilot";
     const file = data.get("file") as File | null;
 
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const report = await analyzeScript({ title, writerName, genre, format, scriptText });
+    const report = await analyzeScript({ title, writerName, genre, secondaryGenre, format, scriptText });
     return NextResponse.json({ ...report, title, writerName });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

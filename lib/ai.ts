@@ -1,9 +1,24 @@
 import type { AnalyzeRequest, AnalysisReport, CraftNotes } from "./types";
 import { buildObservationsPrompt, buildReportPrompt } from "./prompts";
 
+// ── Constants ─────────────────────────────────────────────────────────────────
+
+// ~4 chars per token. gpt-4o-mini context: 128k tokens.
+// We cap at ~120k usable tokens (leaving headroom for prompt overhead + output).
+// 120,000 tokens × 4 chars = 480,000 characters.
+const MAX_SCRIPT_CHARS = 480_000;
+
+const SCRIPT_TOO_LONG_ERROR =
+  "Your script is too long to process. Scripts over approximately 130 pages may exceed our processing limit. " +
+  "Try submitting only the screenplay pages (remove title page, cast lists, or appendices), or contact support@championscreenplays.com for help.";
+
 // ── Public entry point ────────────────────────────────────────────────────────
 
 export async function analyzeScript(req: AnalyzeRequest): Promise<AnalysisReport> {
+  if (req.scriptText.length > MAX_SCRIPT_CHARS) {
+    throw new Error(SCRIPT_TOO_LONG_ERROR);
+  }
+
   const provider = process.env.AI_PROVIDER ?? "openai";
 
   if (provider === "openai") {
@@ -19,14 +34,22 @@ async function analyzeWithOpenAI(req: AnalyzeRequest): Promise<AnalysisReport> {
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   const call = async (prompt: string, maxTokens: number) => {
-    const res = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.4,
-      max_tokens: maxTokens,
-      response_format: { type: "json_object" },
-    });
-    return parseJSON(res.choices[0]?.message?.content ?? "");
+    try {
+      const res = await client.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.4,
+        max_tokens: maxTokens,
+        response_format: { type: "json_object" },
+      });
+      return parseJSON(res.choices[0]?.message?.content ?? "");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes("context_length_exceeded") || msg.includes("maximum context length")) {
+        throw new Error(SCRIPT_TOO_LONG_ERROR);
+      }
+      throw err;
+    }
   };
 
   // Stage 1: internal story observations (fast, small budget)
@@ -45,19 +68,27 @@ async function analyzeWithGroq(req: AnalyzeRequest): Promise<AnalysisReport> {
   const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
   const call = async (prompt: string, maxTokens: number) => {
-    const res = await client.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        {
-          role: "system",
-          content: "You are a professional screenplay analyst. You always respond with valid, complete JSON only. No explanation, no markdown, no code fences. Your JSON must be parseable by JSON.parse().",
-        },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.3,
-      max_tokens: maxTokens,
-    });
-    return parseJSON(res.choices[0]?.message?.content ?? "");
+    try {
+      const res = await client.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          {
+            role: "system",
+            content: "You are a professional screenplay analyst. You always respond with valid, complete JSON only. No explanation, no markdown, no code fences. Your JSON must be parseable by JSON.parse().",
+          },
+          { role: "user", content: prompt },
+        ],
+        temperature: 0.3,
+        max_tokens: maxTokens,
+      });
+      return parseJSON(res.choices[0]?.message?.content ?? "");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes("context_length_exceeded") || msg.includes("maximum context length")) {
+        throw new Error(SCRIPT_TOO_LONG_ERROR);
+      }
+      throw err;
+    }
   };
 
   const observations = await call(buildObservationsPrompt(req), 1200);
