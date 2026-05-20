@@ -199,6 +199,8 @@ Scoring calibration must use the full script profile:
   Primary genre: ${effectiveGenre}${secondaryGenre ? ` | Secondary: ${secondaryGenre}` : ""}${tone.length ? ` | Tone: ${tone.join(" / ")}` : ""}${mode ? ` | Mode: ${mode}` : ""}
 Score pacing, structure, and marketability against what this specific genre/tone/mode demands — not generic expectations.
 
+INTENTIONAL CHAOS RULE: Before penalizing pacing or structure, determine whether rapid velocity, tonal whiplash, or escalating absurdism is the script's intentional mode. A script designed for "what happens next?" urgency should be evaluated on whether that urgency is controlled and purposeful — not whether it meets classical escalation expectations. Controlled tonal anarchy is a legitimate storytelling philosophy. Only flag chaos as a flaw if it loses the audience's orientation entirely, not merely because it is unconventional.
+
 VERDICT:
   RECOMMEND: 90+: submission or market ready.
   CONSIDER:  75-89: real merit, revision needed before going out.
@@ -238,6 +240,10 @@ NO SENTENCE CLONING: Never repeat the same sentence or near-identical phrasing a
     Character notes   → HOW the dynamic is constructed on the page — behavioral specifics, want vs. need, moment of rupture
     Structure notes   → WHERE the relationship drives narrative architecture — which act turns it anchors
   Each section teaches something new. Restating the same observation teaches nothing.
+
+CRAFT NOTE SPECIFICITY: Each bullet in structureNotes, characterNotes, dialogueNotes, pacingNotes, and marketabilityNotes must be a genuinely distinct observation. Do NOT follow an observation with a "This X" consequence sentence and count it as a second bullet — that is one observation dressed as two. Each bullet must identify a different element, scene, character, or pattern.
+  WRONG: "The body swap premise sets up recurring conflict. This creates a strong episodic engine." ← one observation, not two.
+  RIGHT: Two bullets that each name a different structural element with its own specific function or problem.
 
 MANIFESTATION RULE: When a critique DOES recur across sections, each instance must describe the SPECIFIC MANIFESTATION in that domain — not just repeat the label.
   WRONG: "tone is inconsistent" in structure notes, dialogue notes, AND pacing notes.
@@ -283,6 +289,8 @@ comparableTitles →
   IDENTITY: Market positioning through specific analogues.
   Must match primary genre (${effectiveGenre})${tone.length ? ` and tone (${tone.join(" / ")})` : ""}.
   RULE: Name the specific tonal, structural, thematic, or audience parallel — not "similar themes."
+  BLEND RULE: When analyzing a genre blend, every comp must honor BOTH genre layers AND the full tonal register. A dark/surreal/kinetic comedy-thriller requires comps that are dark, surreal, and thriller-adjacent — not broad network comedies. If the tone is elevated, edgy, or absurdist, comps must reflect that register. Defaulting to a broad comedy comp because "comedy" appears in the genre label is a category error.
+  EXAMPLES of tonal-register-aware comps for dark/surreal comedy-thrillers: Barry, Russian Doll, Dead to Me, Search Party, The Flight Attendant, Fleabag, Killing Eve. Brooklyn Nine-Nine, Parks and Recreation, or similar broad/warm network comedies do NOT belong in this register.
 
 commercialOutlook →
   IDENTITY: Screenplay-industry market positioning. How this gets bought, positioned, and sold.
@@ -295,6 +303,7 @@ strengths →
   IDENTITY: What works and why it creates value.
   RULE: Anchored to primaryStrengths from observations. Name the element, explain WHY it works, state WHAT value it creates for the audience or market.
   BANNED: Restating weaknesses. Each bullet must be a genuine positive with a specific effect.
+  VOICE RULE: Distinctive narrative voice — specific, alive-on-the-page language that feels like no other script — is a commercially significant strength and one of the hardest qualities to develop. If the script has it, name it explicitly: identify the lines, exchanges, or scenes that carry it and explain why they work commercially and creatively.
 
 weaknesses →
   IDENTITY: Root causes and their audience consequences.
