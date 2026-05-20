@@ -61,6 +61,7 @@ Genre override rules:
 - Genuine co-equal hybrid → use the blend.
 - Low confidence only → analyze as submitted, flag the ambiguity.
 - Always default to what the script does on the page.
+- BLEND ORDERING RULE: When a primary and secondary genre are both submitted, investigate BOTH with equal initial weight from the content before assigning analytical primacy. The user-submitted ordering reflects their perception — content determines which engine is actually dominant. Do not let the label order suppress detection of either layer.
 
 ${formatRules}
 
@@ -109,6 +110,8 @@ Return ONLY valid JSON. No markdown, no explanation:
     "<tone note>"
   ],
   "storyEngine": "<one precise sentence describing the core narrative engine driving the story>",
+  "antagonistEngine": "<the primary antagonist or threat, their specific role, and — critically — what genre layer they unlock that the surface premise alone does not reveal. E.g. 'Monty, a tap-dancing assassin hired by The Commission, transforms the body-swap comedy into serialized assassination mythology with political conspiracy stakes.' If no distinct antagonist exists, describe the primary external force driving conflict.>",
+  "spectacleElements": "<any kinetic sequences, meme-able moments, visually outrageous set pieces, or social clip-worthy scenes — name them specifically. These are streaming-era commercial assets. Omit if none present.>",
   "formatFit": "<one sentence on how well the execution fits the stated format>"
 }`;
 }
@@ -200,6 +203,7 @@ Scoring calibration must use the full script profile:
 Score pacing, structure, and marketability against what this specific genre/tone/mode demands — not generic expectations.
 
 INTENTIONAL CHAOS RULE: Before penalizing pacing or structure, determine whether rapid velocity, tonal whiplash, or escalating absurdism is the script's intentional mode. A script designed for "what happens next?" urgency should be evaluated on whether that urgency is controlled and purposeful — not whether it meets classical escalation expectations. Controlled tonal anarchy is a legitimate storytelling philosophy. Only flag chaos as a flaw if it loses the audience's orientation entirely, not merely because it is unconventional.
+REFRAME THE QUESTION: The evaluative question is never "Is this confusing?" It is: "Is the audience still emotionally and narratively compelled despite the disorientation?" Shows like Barry, Russian Doll, Atlanta, and Search Party weaponize instability intentionally. Evaluate whether the chaos serves the script's emotional grip — not whether it would be easier to follow if it were more conventional.
 
 VERDICT:
   RECOMMEND: 90+: submission or market ready.
@@ -304,6 +308,7 @@ strengths →
   RULE: Anchored to primaryStrengths from observations. Name the element, explain WHY it works, state WHAT value it creates for the audience or market.
   BANNED: Restating weaknesses. Each bullet must be a genuine positive with a specific effect.
   VOICE RULE: Distinctive narrative voice — specific, alive-on-the-page language that feels like no other script — is a commercially significant strength and one of the hardest qualities to develop. If the script has it, name it explicitly: identify the lines, exchanges, or scenes that carry it and explain why they work commercially and creatively.
+  SPECTACLE RULE: Kinetic sequences, meme-able moments, visually outrageous set pieces, and social clip-worthy scenes are streaming-era commercial assets — they drive discovery, social sharing, and audience retention in ways traditional coverage metrics don't capture. When present (from the antagonistEngine and spectacleElements observations), name them explicitly as strengths with specific commercial value.
 
 weaknesses →
   IDENTITY: Root causes and their audience consequences.
