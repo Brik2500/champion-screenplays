@@ -131,6 +131,9 @@ export default function ScriptForm() {
             <option value="">None (single genre)</option>
             {GENRES.filter((g) => g !== genre).map((g) => <option key={g} value={g}>{g}</option>)}
           </select>
+          <p className="mt-1.5 text-[11px] text-zinc-500 leading-relaxed">
+            Pick this if your script has a meaningful second genre layer — e.g. a Crime script with a strong Romance thread, or a Horror with Comedy woven throughout. Skip it if the second genre is minor.
+          </p>
         </div>
         <div>
           <label className="mb-1.5 block text-sm font-medium text-zinc-300">Format</label>
