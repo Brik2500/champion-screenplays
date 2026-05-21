@@ -288,6 +288,8 @@ premiseFeedback →
 categoryScores →
   IDENTITY: Independent numerical calibration of each craft domain.
   All scores calibrated to: ${effectiveGenre}${secondaryGenre ? ` / ${secondaryGenre}` : ""}, ${tone.join(" / ") || "as detected"}, ${mode || "as detected"}.
+  CHARACTER SCORE CALIBRATION: Score "characters" on arc depth and behavioral specificity, not cast size. A script with 3 fully realized characters with complete, credible arcs should score higher than a script with 10 thin ones. Ask: does the most important character travel a meaningful emotional and behavioral distance from first appearance to final scene? Do they have a coherent want, a revealed need, and a moment of genuine change? Strong character scores (80+) require that the script's central characters feel irreplaceable — not interchangeable with any other character in any other script.
+  PACING SCORE CALIBRATION: Score "pacing" on whether scenes earn their duration through revelation, reversal, or emotional escalation — not on raw scene length. A script where every long scene delivers new information, character turns, or stakes escalation should score strongly even if individual scenes run long. Penalize scenes that occupy runtime without delivering any of the three — not scenes that are long but dramatically justified.
 
 comparableTitles →
   IDENTITY: Market positioning through specific analogues.
@@ -325,6 +327,7 @@ characterNotes →
   IDENTITY: Who these people are and how they behave on the page.
   VOCABULARY: Motivation clarity, internal arc, want vs. need, relationship dynamics, behavioral consistency, emotional truth.
   BANNED: Dialogue quality (belongs in dialogueNotes), structural observations, the word "pacing."
+  ARC DEPTH RULE: A small cast with deep, fully realized arcs scores higher than a large cast with thin ones. Never penalize a script for having fewer named characters — reward it for how far each character travels. Evaluate the arc of the most important character: how far do they move emotionally and behaviorally from page 1 to final scene? A character who undergoes a complete, credible transformation — especially through an unexpected behavioral reversal or revelation moment — is exceptional craft and must be named explicitly. If a character initially reads as antagonist and reveals unexpected vulnerability or complexity, that arc is a significant structural and emotional asset.
 
 dialogueNotes →
   IDENTITY: How characters speak and what the words reveal or obscure.
@@ -337,6 +340,7 @@ pacingNotes →
   BANNED: Structural architecture — do not say "the scene sequencing" or "act structure" (those belong in structureNotes). Emotional reader reactions (belongs in readerReaction).
   RULE: Calibrate against ${effectiveGenre} / ${mode || "detected mode"} conventions. A contained character study has different rhythm expectations than a thriller.
   RULE: This is the ONLY section that owns the word "pacing." All other sections must describe the consequence, not name the cause.
+  SCENE LENGTH RULE: Scene duration alone is never evidence of drag. Before flagging any scene as slow, evaluate whether it is earning its runtime through: (1) revelation — new information that changes our understanding of a character or situation; (2) reversal — a power dynamic or situation that shifts unexpectedly; (3) emotional escalation — the stakes become personal in a new way. A courtroom sequence, sustained dialogue exchange, or confrontation scene that delivers revelation, reversal, and emotional escalation is NOT slow — it is doing exactly what drama requires. Only flag a scene as a pacing problem if it delivers none of these three. Long scenes that earn their length are an asset, not a liability.
 
 marketabilityNotes →
   IDENTITY: How this specific script positions against the current market — distinct from commercialOutlook bullets.
