@@ -56,7 +56,7 @@ async function analyzeWithOpenAI(req: AnalyzeRequest): Promise<AnalysisReport> {
   const observations = await call(buildObservationsPrompt(req), 2000);
 
   // Stage 2: full report anchored to observations
-  const raw = await call(buildReportPrompt(req, observations), 12000);
+  const raw = await call(buildReportPrompt(req, observations), 16000);
 
   return normalizeReport(raw);
 }
@@ -92,7 +92,7 @@ async function analyzeWithGroq(req: AnalyzeRequest): Promise<AnalysisReport> {
   };
 
   const observations = await call(buildObservationsPrompt(req), 2000);
-  const raw = await call(buildReportPrompt(req, observations), 12000);
+  const raw = await call(buildReportPrompt(req, observations), 16000);
 
   return normalizeReport(raw);
 }

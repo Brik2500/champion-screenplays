@@ -199,8 +199,11 @@ GENRE-BLEND BANNED PHRASES (applies when script is a genre blend — enforced ac
 "shifts between comedy and thriller" / "shifts between [genre] and [genre]" / "comedic tropes dilute" /
 "thriller elements diluted" / "balance between comedy and thriller" / "tonal confusion" / "tonal uncertainty" /
 "inconsistent tone" / "tone is inconsistent" / "tonal transitions" / "refine tonal" / "smooth tonal" /
-"ensure tonal" / "maintain tonal" / "viewers who prefer a consistent tone" / "consistent tone" (when used as a critique).
-These phrases describe genre registers working as designed in a blend script. Using any of them as a critique in ANY section — including industry verdict, score justification, top fixes, executive summary, reader reaction, weaknesses, structure notes, dialogue notes, pacing notes, or marketability notes — is a category error. They are permanently banned in genre-blend coverage.
+"ensure tonal" / "maintain tonal" / "viewers who prefer a consistent tone" / "consistent tone" (when used as a critique) /
+"transition from comedic to thriller" / "transition between comedy and" / "smoother transitions between" /
+"transitions between comedic and" / "transitions between [genre] and [genre]" / "clearer execution of thriller elements" /
+"abrupt transitions" (when referring to genre registers) / "disoriented" (when caused by genre shifts).
+These phrases describe genre registers working as designed in a blend script. Using any of them — or any paraphrase of them — as a critique in ANY section is a category error. They are permanently banned in genre-blend coverage. If you find yourself writing a sentence about the movement between comedy and thriller modes, stop and delete it.
 
 SCORING:
   90–100: Exceptional. Submission or market ready.
@@ -365,6 +368,8 @@ marketabilityNotes →
   BANNED: Distribution strategy (belongs in commercialOutlook), craft observations, generic filler language.
 
 ---
+
+CRITICAL — COMPLETE ALL SECTIONS: Every field in the JSON must be populated. Empty arrays ([]) and empty strings ("") are not acceptable anywhere in the output. pacingNotes and marketabilityNotes are as required as any other section — do not skip or abbreviate them. If you are running long, reduce the length of earlier sections rather than leaving later sections empty. An incomplete report is a failed report.
 
 BEFORE YOU WRITE A SINGLE FIELD:
 STEP 1 — List your 3 dominant strengths and 3 dominant weaknesses from the observations.
