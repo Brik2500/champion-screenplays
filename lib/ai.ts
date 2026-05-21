@@ -52,11 +52,11 @@ async function analyzeWithOpenAI(req: AnalyzeRequest): Promise<AnalysisReport> {
     }
   };
 
-  // Stage 1: internal story observations (fast, small budget)
-  const observations = await call(buildObservationsPrompt(req), 1200);
+  // Stage 1: internal story observations
+  const observations = await call(buildObservationsPrompt(req), 2000);
 
   // Stage 2: full report anchored to observations
-  const raw = await call(buildReportPrompt(req, observations), 8000);
+  const raw = await call(buildReportPrompt(req, observations), 12000);
 
   return normalizeReport(raw);
 }
@@ -91,8 +91,8 @@ async function analyzeWithGroq(req: AnalyzeRequest): Promise<AnalysisReport> {
     }
   };
 
-  const observations = await call(buildObservationsPrompt(req), 1200);
-  const raw = await call(buildReportPrompt(req, observations), 8000);
+  const observations = await call(buildObservationsPrompt(req), 2000);
+  const raw = await call(buildReportPrompt(req, observations), 12000);
 
   return normalizeReport(raw);
 }
