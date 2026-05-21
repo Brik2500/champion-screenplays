@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
       "line_items[0][price_data][product_data][name]": "Champion Screenplays Coverage",
       "line_items[0][price_data][product_data][description]": `Development Coverage for "${title}" by ${writerName}`,
       "line_items[0][quantity]": "1",
+      "payment_intent_data[statement_descriptor]": "CHAMPION SCREENPLAYS",
       "metadata[title]": title,
       "metadata[writerName]": writerName,
       "metadata[genre]": genre,
