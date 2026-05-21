@@ -85,7 +85,7 @@ Return ONLY valid JSON. No markdown, no explanation:
     "<strength>"
   ],
   "primaryWeaknesses": [
-    "<2-4 specific weaknesses: name the element, the root cause, and the audience consequence>",
+    "<2-4 specific weaknesses: name the element, the root cause, and the audience consequence. SCENE LENGTH TEST: Before listing any scene as a weakness for pacing or length, apply this test — does the scene deliver (1) new information that changes our understanding, (2) a power/situation reversal, or (3) emotional escalation? If it delivers any of the three, it is NOT a pacing weakness — remove it from this list. Courtroom scenes, procedural sequences, and sustained dialogue exchanges almost always deliver all three. Only list a scene as a pacing weakness if it fails all three tests.>",
     "<weakness>",
     "<weakness>"
   ],
@@ -110,8 +110,10 @@ Return ONLY valid JSON. No markdown, no explanation:
     "<tone note>"
   ],
   "storyEngine": "<one precise sentence describing the core narrative engine driving the story>",
+  "thematicClimax": "<the specific scene or moment where the script's central subject matter and the central dramatic question converge and are answered simultaneously. This is the structural and emotional peak — not the loudest scene, but the scene where the story's argument is made. Name the scene, the characters present, and what is resolved. E.g. 'The Navier-Stokes proof arriving by mail during the custody hearing — Mary's mathematical destiny and Frank's guardianship question are answered in the same beat, making the script's argument about who owns a gifted child's future land as both dramatic and thematic resolution.' If no such convergence exists, note it as a structural gap.>",
   "antagonistEngine": "<the primary antagonist or threat, their specific role, and — critically — what genre layer they unlock that the surface premise alone does not reveal. E.g. 'Monty, a tap-dancing assassin hired by The Commission, transforms the body-swap comedy into serialized assassination mythology with political conspiracy stakes.' If no distinct antagonist exists, describe the primary external force driving conflict.>",
   "spectacleElements": "<any kinetic sequences, meme-able moments, visually outrageous set pieces, or social clip-worthy scenes — name them specifically. These are streaming-era commercial assets. Omit if none present.>",
+  "compsAnchor": "<2-3 specific comparable titles that match this script's genre, tone, mode, AND emotional register — not just surface subject matter. A valid comp requires at least 3 of: same genre, same tonal register, same structural mode, same audience, same platform tier. 'Single parent + child' alone is not a comp basis. 'Gifted child' alone is not a comp basis. The emotional texture, dramatic weight, and narrative approach must align. Name each comp and the specific 3+ overlap points that make it valid.>",
   "formatFit": "<one sentence on how well the execution fits the stated format>"
 }`;
 }
@@ -271,6 +273,7 @@ executiveSummary →
   IDENTITY: Development memo. Overall viability verdict with specific evidence.
   VOCABULARY: Development readiness, narrative ambition, execution gap, commercial positioning.
   BANNED: Plot summary, emotional reader reactions, granular craft notes.
+  THEMATIC CLIMAX RULE: If the thematicClimax observation identifies a specific scene where the story's dramatic question and thematic argument converge, that moment must be named in the executiveSummary. It is the single most important structural asset the script has — the moment that separates a strong script from an exceptional one. Name it, name what it resolves, and state why it works.
 
 readerReaction →
   IDENTITY: The human experience of reading this script. Emotion only.
@@ -297,6 +300,8 @@ categoryScores →
 comparableTitles →
   IDENTITY: Market positioning through specific analogues.
   Must match primary genre (${effectiveGenre})${tone.length ? ` and tone (${tone.join(" / ")})` : ""}.
+  RULE: Use the compsAnchor observation as your primary source. Those comps were validated against genre, tone, mode, and emotional register — use them as your starting point before considering anything else.
+  VALIDITY TEST: A comp is only valid if it shares at least 3 of: same genre, same tonal register, same structural mode, same audience demographic, same platform tier. Surface subject matter overlap alone ("both have a gifted child," "both have a single parent") is not sufficient. The emotional texture, dramatic weight, and narrative approach must align.
   RULE: Name the specific tonal, structural, thematic, or audience parallel — not "similar themes."
   BLEND RULE: When analyzing a genre blend, every comp must honor BOTH genre layers AND the full tonal register. A dark/surreal/kinetic comedy-thriller requires comps that are dark, surreal, and thriller-adjacent — not broad network comedies. If the tone is elevated, edgy, or absurdist, comps must reflect that register. Defaulting to a broad comedy comp because "comedy" appears in the genre label is a category error.
   EXAMPLES of tonal-register-aware comps for dark/surreal comedy-thrillers: Barry, Russian Doll, Dead to Me, Search Party, The Flight Attendant, Fleabag, Killing Eve. Brooklyn Nine-Nine, Parks and Recreation, or similar broad/warm network comedies do NOT belong in this register.
