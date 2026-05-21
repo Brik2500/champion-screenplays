@@ -193,6 +193,15 @@ BANNED PHRASES: "lacks clarity" / "needs refinement" / "underdeveloped" (alone) 
 "has potential" / "could benefit from" / "shows promise" / "the narrative would benefit" /
 "with some work" / "interesting premise" / "compelling exploration" / any generic variation.
 
+GENRE-BLEND BANNED PHRASES (applies when script is a genre blend — enforced across every section of the report without exception):
+"tonal shifts" / "tonal shift" / "tonal consistency" / "tonal dissonance" / "tonal imbalance" / "tonal whiplash" /
+"abrupt tonal" / "jarring tonal" / "rapid genre shifts" / "genre shifts may alienate" / "tonal pivot lacks" /
+"shifts between comedy and thriller" / "shifts between [genre] and [genre]" / "comedic tropes dilute" /
+"thriller elements diluted" / "balance between comedy and thriller" / "tonal confusion" / "tonal uncertainty" /
+"inconsistent tone" / "tone is inconsistent" / "tonal transitions" / "refine tonal" / "smooth tonal" /
+"ensure tonal" / "maintain tonal" / "viewers who prefer a consistent tone" / "consistent tone" (when used as a critique).
+These phrases describe genre registers working as designed in a blend script. Using any of them as a critique in ANY section — including industry verdict, score justification, top fixes, executive summary, reader reaction, weaknesses, structure notes, dialogue notes, pacing notes, or marketability notes — is a category error. They are permanently banned in genre-blend coverage.
+
 SCORING:
   90–100: Exceptional. Submission or market ready.
   80–89:  Very strong with minor addressable issues.
