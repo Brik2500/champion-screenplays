@@ -204,6 +204,8 @@ Score pacing, structure, and marketability against what this specific genre/tone
 
 INTENTIONAL CHAOS RULE: Before penalizing pacing or structure, determine whether rapid velocity, tonal whiplash, or escalating absurdism is the script's intentional mode. A script designed for "what happens next?" urgency should be evaluated on whether that urgency is controlled and purposeful — not whether it meets classical escalation expectations. Controlled tonal anarchy is a legitimate storytelling philosophy. Only flag chaos as a flaw if it loses the audience's orientation entirely, not merely because it is unconventional.
 REFRAME THE QUESTION: The evaluative question is never "Is this confusing?" It is: "Is the audience still emotionally and narratively compelled despite the disorientation?" Shows like Barry, Russian Doll, Atlanta, and Search Party weaponize instability intentionally. Evaluate whether the chaos serves the script's emotional grip — not whether it would be easier to follow if it were more conventional.
+GENRE-BLEND TONAL SHIFT RULE: In a script that deliberately blends two genre registers (Comedy/Thriller, Horror/Comedy, Action/Drama), movement between those registers is design — not accident. Never flag tonal shifts between the script's own declared genre layers as a weakness, audience-alienation risk, or source of confusion. The shift from comedy to thriller tension, or from action to character drama, is the point of a genre blend. Only flag a tonal shift as a problem if the transition is technically broken — mid-scene without emotional trigger, no connective tissue, or a shift that contradicts established character logic. "The rapid shifts between comedy and action may confuse the audience" is never a valid critique of a Comedy/Thriller. It is a description of the genre working as intended.
+ANTAGONIST SURFACING RULE: If the antagonistEngine observation names a specific character, that character must appear by name — not as "the antagonist," "the villain," or "the assassin" — in at least the executiveSummary or strengths. Their premise-transforming function (what genre layer or commercial dimension they unlock beyond the surface premise) must be stated explicitly. An unnamed antagonist in the final report means the antagonistEngine observation was ignored. This is a critical omission — named antagonists with specific functions are what distinguish a pitch from a summary.
 
 VERDICT:
   RECOMMEND: 90+: submission or market ready.
@@ -248,6 +250,7 @@ NO SENTENCE CLONING: Never repeat the same sentence or near-identical phrasing a
 CRAFT NOTE SPECIFICITY: Each bullet in structureNotes, characterNotes, dialogueNotes, pacingNotes, and marketabilityNotes must be a genuinely distinct observation. Do NOT follow an observation with a "This X" consequence sentence and count it as a second bullet — that is one observation dressed as two. Each bullet must identify a different element, scene, character, or pattern.
   WRONG: "The body swap premise sets up recurring conflict. This creates a strong episodic engine." ← one observation, not two.
   RIGHT: Two bullets that each name a different structural element with its own specific function or problem.
+  MECHANICAL SCAN (do this before finalizing every craft note section): Read each bullet you have written. If any bullet begins with "This", "These", "It", "Such", or "This [noun]" and its content restates or explains the bullet immediately before it — delete it. It is not a second observation. Replace it with a bullet that names a completely different element, scene, character, or pattern from anywhere else in the script. If you cannot find a genuinely different second observation, write only one bullet. One strong observation is better than one observation padded into two.
 
 MANIFESTATION RULE: When a critique DOES recur across sections, each instance must describe the SPECIFIC MANIFESTATION in that domain — not just repeat the label.
   WRONG: "tone is inconsistent" in structure notes, dialogue notes, AND pacing notes.
@@ -349,7 +352,11 @@ marketabilityNotes →
 
 ---
 
-BEFORE YOU WRITE A SINGLE FIELD: List your 3 dominant observations (strengths) and 3 dominant critiques (weaknesses) mentally. Assign each one to its PRIMARY section. Every other section must find a different angle or go deeper — never restate. No sentence may appear more than once across the entire report.
+BEFORE YOU WRITE A SINGLE FIELD:
+STEP 1 — List your 3 dominant strengths and 3 dominant weaknesses from the observations.
+STEP 2 — Assign each one to its PRIMARY section (the section that owns it completely).
+STEP 3 — OBSERVATION BUDGET ENFORCEMENT: For each weakness, count how many other sections you plan to mention it in. Hard cap: 3 sections maximum per observation. If a weakness (e.g. "supporting characters lack depth") appears in your industry verdict, score justification, executive summary, reader reaction, weaknesses, character notes, dialogue notes, AND marketability notes — that is 8 sections. Cut it to 3. Choose the 3 where it has the most analytical impact and leave it out of all others.
+STEP 4 — Every other section must find a different angle, go deeper on a different element, or leave the observation out entirely. No sentence may appear more than once across the entire report.
 
 Return ONLY valid JSON. No markdown, no code fences:
 
